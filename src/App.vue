@@ -1,26 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container" id="space-page">
+    <the-sibar></the-sibar>
+    <div class="main" @keydown="handleshortcuts">
+      <the-header/>
+      <router-view></router-view>
+    </div>
+    <!-- <receipt-details /> -->
+  </div>
+  
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TheSibar from './components/TheSibar.vue';
+// import TheMain from './components/TheMain.vue';
+// import CashVue from './views/Cash/CashVue.vue';
+import TheHeader from "./components/TheHeader.vue"
+// import ReceiptDetails from './views/Receipt/ReceiptDetalis.vue'
+
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    TheSibar,TheHeader
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import url(./css/main.css);
 </style>

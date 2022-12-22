@@ -1,0 +1,106 @@
+.container{
+    display: flex;
+    position: fixed;
+    width: 100%;
+}
+.sibar{
+    background-color:  #38393d;
+    width: 200px;
+    height: 100vh;
+}
+.header{
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+}
+.main{
+    width: calc(100% - 200px);
+    height: 100vh;
+}
+.content{
+    width: 100%;
+    height: calc(100vh - 56px);
+    background-color: #eceef1;
+    padding-left: 20px;
+}
+.ms-content-main{
+    width: 100%;
+    height: calc(100vh - 56px);
+    background-color: #eceef1;
+    padding-left: 20px;
+}
+.ms--content-main{
+    width: 100%;
+    height: calc(100vh - 56px);
+    background-color: #eceef1;
+}
+.m-content{
+   
+        
+     display: flex;
+    width: 1000px;
+    height: 460px;
+    justify-content: center;
+    align-items: center;
+    
+}
+.ms-content{
+    margin-right: 16px;
+}
+.h-ms-content{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    /* height: 48px; */
+    /* margin-right: 20px; */
+}
+.ms-toolBar-content{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    /* height: 48px; */
+}
+.h-content{
+    display: flex;
+    justify-content: start;
+    width: 100%;
+    align-items: center;
+    height: 48px;
+}
+.title{
+    /* margin-left: 24px; */
+    font-size: 24px;
+    /* font-weight: 700; */
+    color: #111;
+    font-family: bold;
+}
+.btn-add a{
+    text-decoration: none;
+    color: #fff;
+}
+.m-loading{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    /* background-color:rgba(0, 0, 0, 0.3); */
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loader {
+    /* border: 16px solid #f3f3f3;
+    border-radius: 50%; */
+    /* border-top: 16px solid #3498db; */
+    background: url(../../assets/img/loading.svg) 50% 50% no-repeat;
+    width: 200px;
+    height: 200px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }

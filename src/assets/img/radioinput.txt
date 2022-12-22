@@ -1,0 +1,47 @@
+<template>
+<div>
+    <label for="" class="input__label b">{{labelName}}</label>
+    <div class="base-radio-container">
+        <div class="base-radio" v-for="(radioItem,index) in radioData" :key="index">
+
+            <input type="radio" :name="radioName"  :checked="(radioItem==modelValue)" :id="radioItem" :value="radioItem" @input="onInput" />
+            <label :for="radioItem">{{radioItem}}</label>
+        </div>
+    </div>
+
+</div>
+</template>
+
+<script>
+export default {
+    name: "MsRadio",
+    props: {
+        labelName: String,
+        labelTooltip: String,
+        radioName: String,
+        radioData: Array,
+        modelValue:String,
+    },
+    emits: ['update:modelValue'],
+    methods: {
+        onInput(e) {
+         
+            this.$emit('update:modelValue', e.target.value);
+        },
+    }
+}
+</script>
+
+<style scoped>
+.base-radio-container {
+    display: flex;
+}
+
+.base-radio {
+    margin: 0;
+    padding: 0;
+    height: 36px;
+    display: flex;
+    align-items: center;
+}
+</style>

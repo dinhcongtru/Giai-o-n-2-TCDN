@@ -1,0 +1,16 @@
+.toolBar{
+    padding: 15px 20px;
+    text-decoration: none;
+
+}
+.ms-toolBar{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.toolBar:hover{
+    color: #2ca01c;
+    cursor: pointer;
+}
+

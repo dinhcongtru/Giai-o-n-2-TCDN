@@ -1,0 +1,49 @@
+.h-left{
+    display: flex;
+    align-items: center;
+    line-height: 56px;
+}
+.company-header{
+    margin: 0;
+    align-items: center;
+    display: flex;
+}
+.title-pro{
+    font-weight: 600;
+    font-size: 14px;
+    color: #111;
+}
+.title-pro:hover{
+    cursor: pointer;
+}
+.h-right{
+    display: flex;
+    line-height: 56px;
+    align-items: center;
+    margin-right: 16px;
+}
+.bell:hover{
+    cursor: pointer;
+}
+.user{
+    display: flex;
+    align-items: center;
+}
+.logo-us{
+    cursor: pointer;
+}
+.us-login{
+    width: auto;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+    margin-left: 10px;
+}
+.us-login:hover{
+    cursor: pointer;
+}
+.data-log{
+    display: block;
+    right: 0;
+    min-width: 300px;
+}

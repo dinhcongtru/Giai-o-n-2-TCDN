@@ -1,0 +1,143 @@
+.btn-add{
+    margin: 24px;
+    margin-right: 16px;
+    width: auto;
+    height: 36px;
+    border-radius: 4px;
+    background: #50b83c;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: left;
+    text-align: center;
+    line-height: 30px;
+    color: #fff;
+    outline: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 0px 16px;
+}
+.form-btn{
+    margin: 24px;
+    margin-right: 16px;
+    width: auto;
+    height: 36px;
+    border-radius: 4px;
+    background: #50b83c;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: left;
+    text-align: center;
+    line-height: 30px;
+    color: #fff;
+    outline: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 0px 16px;
+}
+.form-btn:hover{
+    background-color: #57C841;
+    cursor:pointer;
+}
+.btn{
+    margin: 24px;
+    margin-right: 16px;
+    width: auto;
+    height: 36px;
+    border-radius: 4px;
+    background: #50b83c;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: left;
+    text-align: center;
+    line-height: 30px;
+    color: #fff;
+    outline: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    padding: 0px 16px;
+
+}
+.green-btn{
+    background: #50b83c !important;
+}
+#btn-selectCV:hover{
+    background-color:   #babec5;
+
+}
+.btn-add:hover{
+    background-color: #57C841;
+    cursor:pointer;
+}
+.f-pog-l{
+    width: 80px;
+    height: 36px;
+    border-radius: 4px;
+    background: transparent;
+    font-family: 'rotosans';
+    font-weight: 800;
+    font-size: 14px;
+    text-align: left;
+    text-align: center;
+    line-height: 36px;
+    color: #111;
+    outline: none;
+    border: 1px solid #8d9096;
+    cursor: pointer;
+}
+.f-pog-l:hover{
+    background-color: #b8bcc3;
+    cursor:pointer;
+}
+.f-pog-l:focus{
+    border: 1px solid #2ca01c;
+}
+.cat-pog{
+    width: 80px;
+    height: 36px;
+    border-radius: 4px;
+    background: transparent;
+    font-family: 'rotosans';
+    font-weight: 800;
+    font-size: 14px;
+    text-align: left;
+    text-align: center;
+    line-height: 36px;
+    color: #111;
+    outline: none;
+    border: 1px solid #8d9096;
+    cursor: pointer;
+}
+.cat-pog:hover{
+    background-color: #b8bcc3;
+    cursor:pointer;
+}
+.cat-pog:focus{
+    border: 1px solid #2ca01c;
+}
+.add-pog{
+    margin-left: 8px;
+    width: 130px;
+    height: 36px;
+    border-radius: 2px;
+    background: #2ca01c;
+    font-family: 'rotosans';
+    font-weight: 800;
+    font-size: 14px;
+    text-align: left;
+    text-align: center;
+    line-height: 34px;
+    color: #fff;
+    outline: none;
+    border: 1px solid #8d9096;
+    cursor: pointer;
+}
+.add-pog:hover{
+    background-color: #57C841;
+    cursor:pointer;
+}
+.add-pog:focus{
+    border: 1px solid #2ca01c;
+}
+.btn-logout{
+    width: 282px;
+}

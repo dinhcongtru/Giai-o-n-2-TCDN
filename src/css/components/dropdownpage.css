@@ -1,0 +1,155 @@
+.pagination-count{
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .pagination-count-title{
+  color: #666666;
+  margin-right: 8px;
+  }
+  .pagination-count-number{
+    color: #1F1F1F;
+    margin-left: 2px;
+    margin-right: 10px;
+  }
+  .pagination-count-dropdown{
+    background-image: url("../../assets/img/Sprites.64af8f61.svg");
+    background-position: -1793px -470px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: linear 0.3s;
+  }
+  
+  .pagination-dropdown-list{
+    position: absolute;
+    z-index: 99;
+    bottom: 26px;
+    right: 0px;
+    background-color: #FFFFFF;
+    width: 76px;
+    box-shadow: 0px 2px 8px rgba(23,27,42,0.24);
+    border-radius: 4px;
+    padding: 8px 0px;
+    display: block;
+  }
+  .pagination-dropdown-item{
+    height: 36px;
+    width: 100%;
+    padding: 0px 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+  }
+  .pagination-dropdown-item:hover{
+    color: #007AFF;
+  }
+  .pagination-dropdown-item.active{
+    color: #007AFF;
+  }
+  .check-icon {
+    font-size: 16px;
+    color: #007AFF;
+    display: none;
+  }
+  .pagination-dropdown-item.active .check-icon{
+  display: block;
+  }
+  /* .form-input-error{
+    border: 1px solid #E60000;
+  } */
+  /* input[required].form-input-error + .error-text{
+    display: block;
+  } */
+  .content-footer{
+    height: 50px;
+    width: 100%;
+    display: flex;
+    background-color: #FFFFFF;
+    border-radius: 0px 0px 3px 3px;
+    padding:0px 32px;
+    border-top: #666666;
+  }
+  .total-page{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    height: 48px;
+  }
+  
+.total-page p{
+    font-size: 14px;
+    color: #666666;
+    cursor: pointer;
+}
+.total-page span{
+    font-weight: bold;
+    color: black;
+}
+.pagination-count{
+  display: flex;
+}
+.pagination{
+  flex: 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  z-index: 100;
+}
+.pagination-table-row-number{
+  color: #1F1F1F;
+  font-weight: 700;
+  margin-left: 10px;
+}
+.pagination-table-row-title{
+  color: #666666;
+}
+.pagination-button{
+  display: flex;
+  margin-top: 13px;
+}
+.button_prev{
+  background-image: url("../../assets/img/Sprites.64af8f61.svg") !important;
+  background-position: -36px -409px !important;
+  width: 24px ;
+  height: 24px ;
+  cursor: pointer;
+
+}
+.pagination-button-prev{
+  background-image: url("../../assets/img/Sprites.64af8f61.svg") ;
+  background-position: -36px -361px ;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.button_next{
+  background-image: url("../../assets/img/Sprites.64af8f61.svg") !important;
+  background-position: -84px -409px !important;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.pagination-button-next{
+  background-image: url("../../assets/img/Sprites.64af8f61.svg");
+  background-position: -84px -361px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.pagination-button-disable{
+  opacity: 0.5;
+  cursor: none;
+}
+.pagination-button{
+  display: flex;
+
+}
+.margleft-16{
+  margin-right: 16px;
+}

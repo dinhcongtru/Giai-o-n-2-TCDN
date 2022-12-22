@@ -1,0 +1,407 @@
+.icon-h{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -843px -30px;
+    width: 24px;
+    height: 24px;
+    margin: 0px 16px;
+}
+.icon-r{
+    background: url(../../assets/img/Sprites.64af8f61.svg)no-repeat -80px -360px;
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+    transform: rotate(90deg);
+    margin: 0px 10px;
+    cursor: pointer;
+}
+.us-r{
+    background: url(../../assets/img/Sprites.64af8f61.svg)no-repeat -80px -360px;
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    min-height: 14px;
+    transform: rotate(90deg);
+    margin-left: 10px;
+    cursor: pointer;
+}
+.bell{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -788px -30px;
+    width: 24px;
+    height: 24px;
+    margin: 0px 16px 0px 0px;
+}
+.logo-us{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -352px -894px;
+    width: 32px;
+	height: 32px;
+    border-radius: 50%;
+}
+.icon-sibar{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -424px -86px;
+    width: 24px;
+    height: 24px;
+    margin: 0px 12px;
+}
+.icon-search{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat  -992px -360px;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    position: absolute;
+    margin-right: 124px;
+    
+}
+.icon-reload{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -423px -201px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    margin: 16px;
+    cursor: pointer;
+}
+.icon-reload:hover{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -1097px -88px;
+}
+.icon-edit{
+    background: url(../../assets/img/Sprites.64af8f61.svg)no-repeat -896px -359px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    cursor: pointer;
+
+}
+.icon-dashboard{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -30px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-cash{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -73px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}   
+.icon-send{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -117px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-cart{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -161px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-sell{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -204px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-manager{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -249px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-house{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -291px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-tool{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -336px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-defau{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -378px -1630px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-tax{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -423px -1630px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-price{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -467px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-total{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -510px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-budget{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -378px -1659px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-report{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -547px -1628px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-finance{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -204px -1664px;
+    width: 24px;
+    height: 24px;
+    padding-right: 12px;
+    margin-left: 8px;
+}
+.icon-cbx{
+    background: url(http://localhost:8080/img/Sprites.64af8f61.2ff7618a.svg) no-repeat -30px -357px;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 5px;
+    transform: rotate(270deg);
+    right: 2px;
+    transition: transform .3s linear;
+}
+.icon-down {
+    background-image: url("../../assets/img/Sprites.64af8f61.svg");
+    background-position: -1124px -357px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+.icon-ques{
+    background: url(../../assets/img/Sprites.64af8f61.svg)no-repeat -89px -144px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    margin-right: 8px;
+    cursor: pointer;
+    outline: none;
+}
+.icon-close{
+    background: url(../../assets/img/Sprites.64af8f61.svg)no-repeat -144px -144px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    cursor: pointer;
+    outline: none;
+}
+.icon-warrring{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat  -598px -463px;
+	width: 48px;
+	height: 48px;
+    margin-right: 25px;
+    
+}
+.dialog-body-validate{
+    background-image: url("../../assets/img/Sprites.64af8f61.svg");
+    background-position: -752px -462px;
+    height: 36px;
+    width: 56px;
+  }
+.icon-us{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat  -1434px -359px;
+	width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    padding-right: 8px;
+}
+.icon-xuatkhau{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat  -704px -200px;
+	width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    cursor: pointer;
+    margin-right: 16px;
+}
+.icon-xuatkhau:hover{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -704px -256px;
+}
+.icon-delete{
+    background: url(http://localhost:8080/img/Sprites.64af8f61.2ff7618a.svg) no-repeat -560px -359px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    position: absolute;
+    right: 25px;
+}
+.mi-delete-table{
+    background: url(http://localhost:8080/img/Sprites.64af8f61.2ff7618a.svg) no-repeat -464px -312px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    position: absolute;
+    right: 40px;
+}
+.mi-48{
+    background:  url(../../assets/img/Sprites.64af8f61.svg) no-repeat -826px -456px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
+    margin-right: 11px;
+
+}
+.mi-help__nav{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -731px -30px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+} 
+.mi-chat__nav{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -899px -30px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+
+}
+.mi-setting__nav{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -675px -30px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.mi-category{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -568px -30px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.marginRight16{
+    margin: 0px 10px;
+    cursor: pointer;
+}
+.icon-customer{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -872px -200px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.icon-provide{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -928px -200px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.icon-employee{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -984px -200px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.icon-setting{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -648px -200px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.funnel-icon{
+    background: url(http://localhost:8080/img/Sprites.64af8f61.2ff7618a.svg) no-repeat -1814px -202px;
+    width: 18px;
+    height: 22px;
+    position: absolute;
+    cursor: pointer;
+    right: 8px;
+    top: 3px;
+}
+.mi-arrow-check-all{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -256px -143px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    margin-left: 16px;
+    cursor: pointer;
+}
+.mi-setting__list{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -88px -200px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    cursor: pointer;
+    
+}
+.recent-log-btn{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -648px -144px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.mi-tour{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -984px -144px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.mi-setting-detail{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -32px -144px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.mi-help{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -89px -144px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.mi-close{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -144px -144px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+}
+.mi-attach{
+    background: url(../../assets/img/Sprites.64af8f61.svg) no-repeat -539px -203px;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    min-height: 18px;
+    margin-right: 8px;
+}

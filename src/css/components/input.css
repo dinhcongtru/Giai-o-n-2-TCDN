@@ -1,0 +1,170 @@
+.input-search{
+    width: 220px;
+    height: 32px;
+    outline: none;
+    border: 1px solid #f1f1f1;
+    border-radius: 4px;
+    padding-left: 12px;
+    font-family: italic !important;
+}
+.input-search:focus{
+    border: 1px solid #2ca01c;
+}
+#search-employee{
+    font-family:italic ;
+}
+.input-check-table{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin: 0;
+    accent-color:#2ca01c ;
+}
+.check-custom{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color:#2ca01c ;
+} 
+.check-custom:focus{
+    /* border: 1px solid #2ca01c; */
+    outline:1px solid #2ca01c;
+}
+
+.check-ey{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color:#2ca01c ;
+}
+.check-ey:focus{
+    outline:1px solid #2ca01c;
+}
+
+.inp-ma{
+    outline: none;
+    height: 32px;
+    padding-left: 12px;
+    border-radius: 2px;
+    border: 1px solid #babec5;
+    width: 170px
+}
+.inp-ma:focus{
+    border: 1px solid #2ca01c;
+}
+.inf-cv{
+    width: 100%;
+    height: 28px;
+}
+.inf-cv:focus{
+    border: 1px solid #2ca01c;
+}
+
+.chucdanh{
+    width: calc(100% - 16px);
+}
+.ridio-gt{
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    accent-color: #2ca01c;
+}
+.ridio-gt:hover{
+    cursor: pointer;
+}
+
+input[type="date"]{
+    padding-left: 8px;
+    padding-right: 8px;
+}
+.date{
+    font-family: italic;
+}
+.date-ngsinh{
+    height: 34px;
+}
+.date-ngsinh:hover{
+    cursor: pointer;
+}
+.date-cmnd{
+    height: 34px;
+    border: 1px solid #babec5;
+    width: 172px;
+}
+.date-cmnd:hover{
+    cursor: pointer;
+}
+.form-label{
+    color: #1F1F1F;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+.form-label span{
+    color: #E60000;
+}
+.form-input{
+    /* width: 220px; */
+    height: 28px;
+    outline: none;
+    /* border: 1px solid #f1f1f1; */
+    border-radius: 2px;
+    padding-left: 12px;
+  }
+.inp-name{
+  outline: none;
+  height: 28px;
+  padding-left: 12px;
+  border-radius: 2px;
+  border: 1px solid #babec5;
+  width: 220px;
+}
+.inp-name:focus{
+  border: 1px solid #2ca01c;
+}
+  .form-input:focus {
+    border: 1px solid #2ca01c;
+  }
+  .form-input-error{
+    border: 1px solid #E60000;
+  }
+   /* .form-input-error:focus{
+    border: 1px solid #E60000;
+  }  */
+  .remove-input-error{
+    border: 1px solid #babec5;
+  }
+  .error-text{
+    width: 100%;
+    color: #E60000;
+    position: absolute;
+    bottom: -18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: none;
+  }
+  input[required].form-input-error + .error-text{
+    display: block;
+  }
+  input[required].input-error + .error-text{
+    display: block;
+  }
+  .number.form-input-error + .error-text{
+    display: block;
+  } 
+  input[type = email].form-input-error + .error-text{
+    display: block;
+  }
+  input[type = date].form-input-error + .error-text{
+    display: block;
+  }
+  .radio.form-input-error + .error-text{
+    display: block;
+  } 
+  .input-filter{
+    width: 50px !important;
+  }
+  tr:has(input[type = checkbox]:checked) td{
+    background-color: #dcf1d8;
+  }
