@@ -9,12 +9,12 @@
     overflow: auto;
 }
 ::-webkit-scrollbar{
-    width: 6px;
+    width: 9px;
     background-color: #d3d3d3;
 }
 ::-webkit-scrollbar-thumb{
     background-color: #9fa6b2;
-    border-radius: 3px;
+    border-radius: 1px;
 }
 .menu-item--active{
     align-items: center;

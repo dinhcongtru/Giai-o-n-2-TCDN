@@ -1,6 +1,6 @@
 <template>
         <router-view />      
-        <div class="ms--content-main" @click="closeRepairOption">
+        <div class="ms--content-main" @click="closeRepairOption"  @keydown="handleshortcuts">
                 <div class="ms-toolBar">
                     <div class="h-ms-content">
                         <div class="title">Thu chi tiền mặt</div>
@@ -34,7 +34,7 @@
                                 <div class="delete-all">
                                     <ms-button  class="excuteDeleteBatch" title="Thực hiện hàng loạt" :class="[{ dropup: isDelActive }]" @click="onToggleDelBatch()" />
                                     <span class="icon-delete"></span>
-                                    <ms-button v-if="isDelActive" id="deleteBatch" @click="onDeleteBatch()" title="Xóa"/>
+                                    <ms-button v-if="isDelActive && this.selected.length > 0" id="deleteBatch" @click="onDeleteBatch()" title="Xóa"/>
                                 
                                 </div>
                                 <div class="delete-all filter">
@@ -48,11 +48,11 @@
                                 <span class="icon-search"></span>
                                 <span class="icon-reload" title="Làm mới" @click="onRefresh"></span>
                                 <span class="icon-xuatkhau" title="Xuất ra Excel" @click="exportExcel()"></span>
-                                <span class="mi-setting__list"></span>
+                                <span class="mi-setting__list" title="Tùy chỉnh giao diện"></span>
                             </div>
                              </div>
                         <div class="main-table">
-                            <the-table @totalPage="getTotalPage($event)" @focusInput="focusInput" :pageSize="pageSize" :pageNumber="pageNumber" :filter="filter" :refresh="refresh" :idForm="isShowModal && idForm" @checkAll="toggleCheckAll($event)" @addForm="onToggleModal" @pageFilter="changePageNumber($event)" @refreshData="onRefresh" />
+                            <table-receipt pageSize="pageSize" :pageNumber="pageNumber"   :employees="employees" :idForm="isShowModal && idForm" @checkAll="toggleCheckAll($event)" @addForm="onToggleModal" @pageFilter="changePageNumber($event)" @refreshData="onRefresh"  />
                         </div>
                     </div>
                         <div class="pagination">
@@ -96,7 +96,7 @@
             @closeSelect="toggleCheckAll($event)"
         />
         <ms-loading v-if="isLoading" />
-        <receipt-detalis v-if="isShowModal == true" @closeModalRece="isShowModal = false"/>
+        <!-- <receipt-detalis v-if="isShowModal == true" @closeModalRece="isShowModal = false" :employeeCode="employees.employeeCode" :employeeID="employees.employeeID" :id="id"/> -->
 
         </div>        
 </template>
@@ -104,7 +104,7 @@
 
 import msButton from '../../components/base/ms-button.vue';
 import msInput from '../../components/base/ms-input.vue';
-import TheTable from '../../components/TheTable.vue';
+import TableReceipt from '../../components/TablePecet.vue';
 import msDialog from '../../components/base/ms-dialog.vue';
 import msLoading from '../../components/base/ms-loading.vue';
 import Resource  from '@/Resource/Resource';
@@ -115,12 +115,47 @@ import {RepositoryFactory} from '../../Repository/RepositoryFactory';
 
 // import TheModal from './TheModal.vue';
 import msDropdownPage from '../../components/base/ms-dropdownPage.vue';
-import ReceiptDetalis from './ReceiptDetalis.vue';
+// import ReceiptDetalis from './ReceiptDetalis.vue';
 export default {
     name:"ReceiptPaymentList",
-    components:{msButton,TheTable, msInput ,msDropdownPage ,msDialog,msLoading,ReceiptDetalis },
+    components:{msButton,TableReceipt, msInput ,msDropdownPage ,msDialog,msLoading },
     mounted(){
-        this.focusInput();
+        /**
+         * Thực hiện render dữ liệu nhân viên
+         **  Author: Đinh Công Trứ(26/10/2022)
+        */
+        this.onLoadData();
+    },
+    watch:{
+         // Thực thi hàm Tìm kiếm
+        filter() {
+                this.onFilterData(this.filter);
+                
+            },
+            // Thực thi load lại trang
+        refresh() {
+            this.onLoadData();
+        },
+        /**
+         * Thực hiện xử lý load dữ liệu chuyển trang
+         **  Author: Đinh Công Trứ(26/10/2022)
+        */
+        pageNumber() {
+            // Nếu ở trang 2 trở lên mà muốn tìm kiếm thì trang sẽ trở về 1
+            if (this.filter) {
+                this.onFilterData(this.filter, this.pageNumber);
+            } else {
+                // Load lại trang
+                this.onLoadData();
+            }
+        },
+        /**
+        //  * Thực hiện Load lại dữ liệu khi chuyển pageSize
+        //  **  Author: Đinh Công Trứ(26/10/2022)
+        //  */
+        pageSize() {
+            this.onLoadData();
+        },
     },
     data(){
         return{
@@ -129,7 +164,7 @@ export default {
             isShowModal: false,
             isPaginationActive: false,
             totalPage: null,
-            pageSize: "10",
+            pageSize: "25",
             pageNumber: "1",
             filter: "",
             refresh: false,
@@ -140,24 +175,98 @@ export default {
             isDialog: false,
             isLoading: false,
             idEmployee: [],
+            // Employeeid: null,
+            // codeEmployee: null,
             isDelActive: false,
             pageNumber2:1,
             Resource : Resource,
             keyCode: keyCode,
-            closeSelect: false
-            
+            closeSelect: false,
+            isDropdown: false,
+            pageFilter: this.pageNumber,
+            employees:{}
+                    
            
             
         };
     },
     methods: {
-        focusInput(){
-            // this.$refs.search.$refs.ref.focus();
-        },
+       
         handleshortcuts(e){
             if(e.keyCode == keyCode.keyCode.insert){
                 this.onToggleModal();
             }
+        },
+        /**
+         * Thực hiện xử lý tìm kiếm dữ liệu hiển thị vào trong bảng
+         **  Author: Đinh Công Trứ(26/10/2022)
+         */
+         onFilterData(filter, pageNumber) {
+            this.isLoading = true;
+            if (pageNumber > 1) {
+                this.pageFilter = pageNumber;
+            } else {
+                this.pageFilter = 1;
+            }
+            try {
+                EmployeeRepository.getEmployeeByFilterAndPagding(this.pageSize,this.pageNumber,filter)
+                .then((response) => {
+                    this.employees = response.data.data;
+                    this.totalPage = response.data.totalCount;
+                    this.$emit("pageFilter", this.pageFilter);
+                    this.isLoading = false;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    if(error.response.status == 500){
+                            this.isError = !this.isError;
+                            this.errorMgs = Resource.ERROR.filterDataError;
+                        }else {
+                            this.isError = !this.isError;
+                            this.errorMgs = error.response.data.userMsg;
+                        }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+            
+        },
+        /**
+         * Thực hiện xử lý load data vào table
+         **  Author: Đinh Công Trứ(26/10/2022)
+         */
+         onLoadData() {
+            this.isLoading = true;
+            try {
+                
+                EmployeeRepository.getEmployeeByPagding(this.pageSize,this.pageNumber)
+                .then((response) => {
+                    this.employees = response.data.data;
+                    this.employees.forEach((element) => {
+                        element.IsChecked = false;
+                    });
+                    this.totalPage = response.data.totalCount;
+
+                    this.isLoading = false;
+                    // this.$emit("focusInput");
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                    if(error.response.status == 500){
+                            this.isError = !this.isError;
+                            this.errorMgs = Resource.ERROR.loadDataError;
+                        }else {
+                            this.isError = !this.isError;
+                            this.errorMgs = error.response.data.userMsg;
+                        }
+
+                });
+            } catch (error) {
+                this.isError = !this.isError;
+                this.errorMgs = "Lấy dữ liệu thất bại!, Vui lòng thử lại sau.";
+            }
+           
         },
         /**
          * Thực hiện xử lý ẩn hiện dropdown deleteBatch
@@ -215,7 +324,7 @@ export default {
          */
         getPageSize(page) {
             this.pageSize = page;
-            this.filter = "";
+            this.onLoadData();
         },
         /**
          * Thực hiện xử lý chuyển dữ liệu pageNumber vào table để chuyển trang
@@ -225,6 +334,7 @@ export default {
             if (Math.ceil(this.totalPage / this.pageSize) > this.pageNumber) {
                 this.pageNumber++;
                 this.pageNumber2++
+                this.onLoadData();
             }
            
         },
@@ -237,6 +347,7 @@ export default {
             if (this.pageNumber > 1) {
                 this.pageNumber = this.pageNumber - 1;
                 this.pageNumber2--
+                this.onLoadData();
             }
         },
         /**
@@ -253,7 +364,7 @@ export default {
          */
         onRefresh() {
             this.refresh = !this.refresh;
-            this.filter = "";
+            this.onLoadData();
             this.pageNumber = this.pageNumber2;
         },
         /**

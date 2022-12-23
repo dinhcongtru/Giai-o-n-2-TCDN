@@ -1,5 +1,5 @@
 <template>
-    <div class="row-dialog"  @click.self="onClose">
+    <div class="row-dialog" >
         <div class="pogup warring">
             <div class="content-dialog">
                 <span v-if="dialogName == 'delete' || dialogName == 'deleteBatch' || dialogName == 'checkCode'" class="icon-warrring" id="icon-warrring"></span>
@@ -60,11 +60,12 @@ export default {
         };
     },
     methods: {
+        
         /**
          * Thực hiện chuyên thông báo đóng dialog vào component cha
          **  Author: Đinh Công Trứ(1/11/2022)
          */
-        onClose() {
+        onClose() {            
             this.$emit("closeDialog");
         },
         /**
@@ -72,6 +73,7 @@ export default {
          **  Author: Đinh Công Trứ(1/11/2022)
          */
         onCloseDialog(){
+            
             this.$parent.$emit("closeModal");
         },
         /**

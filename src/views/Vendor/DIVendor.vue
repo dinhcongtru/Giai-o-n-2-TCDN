@@ -1,5 +1,5 @@
 <template>
-    <div class="ms-content-main" @click="closeRepairOption">
+    <div class="ms-content-main" @click="closeRepairOption" @keydown="handleshortcuts">
         <div class="ms-toolBar">
             <div class="ms-toolBar-content">
                 <div class="title">{{Resource.CONTENT.contentVendor}}</div>
@@ -33,7 +33,7 @@
                         <div class="delete-all">
                             <ms-button  class="excuteDeleteBatch" title="Thực hiện xóa hàng loạt" :class="[{ dropup: isDelActive }]" @click="onToggleDelBatch()" />
                             <span class="icon-delete"></span>
-                            <ms-button v-if="isDelActive" id="deleteBatch" :disable="true" @click="onDeleteBatch()" title="Xóa"/>
+                            <ms-button v-if="isDelActive && this.selected.length > 0" id="deleteBatch"  @click="onDeleteBatch()" title="Xóa"/>
                            
                         </div>
                         <div class="delete-all filter">
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                     <div class="main-table">
-                        <the-table @focusInput="focusInput" :pageSize="pageSize" :pageNumber="pageNumber" :filter="filter"  :employees="employees" :idForm="isShowModal && idForm" @checkAll="toggleCheckAll($event)" @addForm="onToggleModal" @pageFilter="changePageNumber($event)" @refreshData="onRefresh"  />
+                        <the-table ref="tableVendor" :pageSize="pageSize" :pageNumber="pageNumber"  :employees="employees" :idForm="isShowModal && idForm" @checkAll="toggleCheckAll($event)" @addForm="onToggleModal" @pageFilter="changePageNumber($event)" @refreshData="onRefresh"  />
                     </div>
                 </div>
                 <div class="pagination">
@@ -110,6 +110,7 @@ import msLoading from '../../components/base/ms-loading.vue';
 import Resource  from '@/Resource/Resource';
 import keyCode from '@/enum/keyCode';
 import axios from 'axios';
+
 import {RepositoryFactory} from '@/Repository/RepositoryFactory';
 const EmployeeRepository = RepositoryFactory.get('Employees');
 
@@ -120,11 +121,11 @@ name:"TheVendor",
 components:{msButton,TheTable, msInput ,msDropdownPage ,msDialog,msLoading},
 mounted(){
 // this.focusInput();
-/**
-         * Thực hiện render dữ liệu nhân viên
-         **  Author: Đinh Công Trứ(26/10/2022)
-         */
-         this.onLoadData();
+    /**
+     * Thực hiện render dữ liệu nhân viên
+     **  Author: Đinh Công Trứ(26/10/2022)
+        */
+        this.onLoadData();
         
 },
 watch:{
@@ -140,8 +141,7 @@ watch:{
             this.onFilterData(this.filter);
             
         },
-},
-    // Thực thi load lại trang
+        // Thực thi load lại trang
     refresh() {
         this.onLoadData();
     },
@@ -165,6 +165,8 @@ watch:{
     pageSize() {
         this.onLoadData();
     },
+},
+    
 
 data(){
 return{
@@ -198,7 +200,10 @@ return{
 };
 },
 methods: {
-
+    onDelBatch(){
+        this.isDialog = false;
+        this.selected=[];
+    },
 // focusInput(){
 //     // this.$refs.search.$refs.ref.focus();
 // },
@@ -308,11 +313,12 @@ handleshortcuts(e){
  **  Author: Đinh Công Trứ(30/10/2022)
  */
  onDeleteEmployee() {
+    
     this.isDialog = !this.isDialog;
     this.isDropdown = false;
     this.featureDropdown = null;
     this.showDelete = null;
-    this.selected= [];
+    this.$refs.tableVendor.unCheckAll();
     this.onRefresh();
     // reload lại data
 },
@@ -416,7 +422,10 @@ toggleCheckAll(e) {
     
     this.isChecked = !this.isChecked;
     this.selected = e;
-    
+    this.isChecked = false;
+    this.isDialog = false;
+   
+   
 },
 /**
  * Thực hiện xử lý chuyển trang về trang đầu tiên khi tìm kiếm nhân viên

@@ -1,15 +1,18 @@
 <template>
-    <div class="base-view-detail">
+    <div class="base-view-detail" :id="id" @keydown = "handleshortcuts">
         <div class="header-layout">
             <div class="top-header">
                 <div class="recent-log-btn"></div>
-                <div class="title-payment">Phiếu chi pc161</div>
+                <div class="title-payment">{{ title }}</div>
                 <div class="header-detail-input">
                     <the-dropdown
                         type="text"
                         title="Đơn vị không được để trống."                   
                         id="width334"
-                        tabindex="3"
+                        tabindex="1"
+                        :autoFocus="true"
+                        :isReadonly="true"
+                        :refName="refName"
                         idStyle="id9"
                         :departmentList="departmentList"
                         :departmentId="employee.departmentID"
@@ -30,7 +33,7 @@
                     <div class="con-ms-tooltip" title="Giúp(F1)">
                         <div class="mi-help"></div>
                     </div>
-                    <div class="con-ms-tooltip" @click="onCancelModal" title="Đóng(ESC)">
+                    <div class="con-ms-tooltip" @click="onCloseModal" title="Đóng(ESC)">
                         <div class="mi-close"></div>
                     </div>
                 </div>
@@ -47,7 +50,7 @@
                                 type="text"
                                 title="Đơn vị không được để trống."                   
                                 idStyle="id8"
-                                tabindex="3"
+                                tabindex="2"
                                 :departmentList="departmentList"
                                 :departmentId="employee.departmentID"
                                 :departmentName="employee.departmentName"
@@ -58,23 +61,23 @@
                             </div>
                             <div class="obj-name">
                                 <div class="obj-ma-title">Tên đối tượng</div>
-                                <input type="text" class="input-objName">
+                                <input type="text" class="input-objName" tabindex="3">
                             </div>
                         </div>
                         <div class="obj-two">
                             <div class="obj-ma">
                                 <div class="obj-ma-title">Người nhận</div>
-                                <input type="text" class="input-nhan">
+                                <input type="text" class="input-nhan" tabindex="4">
                             </div>
                             <div class="obj-name">
                                 <div class="obj-ma-title">Địa chỉ</div>
-                                <input type="text" class="input-objName">
+                                <input type="text" class="input-objName" tabindex="5">
                             </div>
                         </div>
                         <div class="obj-three">
                             <div class="regen">
                                 <div class="obj-ma-title">Lý do chi</div>
-                                <input type="text" name="" id="" class="w-full" value="Chi tiền cho">
+                                <input type="text" name="" id="" class="w-full" value="Chi tiền cho" tabindex="6">
                             </div>
                         </div>
                     </div>
@@ -85,7 +88,7 @@
                             type="text"
                             title="Đơn vị không được để trống."                   
                             idStyle="id7"
-                            tabindex="3"
+                            tabindex="7"
                             :departmentList="departmentList"
                             :departmentId="employee.departmentID"
                             :departmentName="employee.departmentName"
@@ -97,7 +100,7 @@
                         <div class="kem-theo">
                             <div class="obj-ma-title">Kèm theo</div>
                             <div class="merge-row">
-                                <input type="text" name="" id="" class="input-number" placeholder="Số lượng">
+                                <input type="text" name="" id="" class="input-number" placeholder="Số lượng" tabindex="8">
                                 <div class="title-gim">chứng từ gốc</div>
                             </div>
                         </div>
@@ -110,15 +113,15 @@
                 <div class="w-1/5 width20">
                     <div class="m-row left-separate">
                         <div class="obj-ma-title">Ngày hạch toán</div>
-                        <input type="date" class="datepacker" value="2020-12-20">
+                        <input type="date" class="datepacker" value="2020-12-20" tabindex="9">
                     </div>
                     <div class="m-row left-separate">
                         <div class="obj-ma-title">Ngày phiếu chi</div>
-                        <input type="date" class="datepacker"  value="2020-12-20">
+                        <input type="date" class="datepacker"  value="2020-12-20" tabindex="10">
                     </div>
                     <div class="m-row left-separate">
                         <div class="obj-ma-title">Số phiếu chi</div>
-                        <input type="text" class="datepacker sochi" value="pc161">
+                        <input type="text" class="datepacker sochi" value="pc161" tabindex="11">
                     </div>
                 </div>
                 <div class="w-1/4 summary-info">
@@ -137,7 +140,7 @@
                                 title="Đơn vị không được để trống."                   
                                 id="w100"
                                 idStyle="id6"
-                                tabindex="3"
+                                tabindex="12"
                                 :departmentList="departmentList"
                                 :departmentId="employee.departmentID"
                                 :departmentName="employee.departmentName"
@@ -543,8 +546,8 @@
                 </div>
                 <div class="main-child">
                     <div class="ms-child">
-                        <button class="btn-addRow">Thêm dòng</button>
-                        <button class="btn-deleteRow">Xóa hết dòng</button>
+                        <button class="btn-addRow btn-btn" tabindex="13">Thêm dòng</button>
+                        <button class="btn-deleteRow btn-btn" tabindex="14">Xóa hết dòng</button>
                     </div>
                     <div class="ms-child-2">
                         <div class="merge-child">
@@ -559,10 +562,10 @@
         </div>
         <div class="footer-layout">
             <div class="f-pog">
-                <button class="f-pog-l closeEmployee white unhover" tabindex="17" id="cancel-add-form" title="Hủy(Ctrl F9)" @click="onCancelModal">{{Resource.BUTTON.HUY}}</button>
+                <button class="f-pog-l closeEmployee white unhover btn-btn" tabindex="15" id="cancel-add-form" title="Hủy(Ctrl F9)" @click="onCancelModal">{{Resource.BUTTON.HUY}}</button>
                 <div class="f-pog-r">
-                    <button  class="cat-pog white unhover" tabindex="18" id="cancel-add-form" title="Cất" type="submit" >Cất </button>
-                    <button  tabindex="19" :id="idButton" :title="titleButton" class="add-pog flex1" type="submit" :class="[id == 'edit-form']">Cất và In</button>
+                    <button  class="cat-pog white unhover btn-btn" tabindex="16" id="cancel-add-form" title="Cất" type="submit" @click="save()" >Cất </button>
+                    <button  tabindex="17" :id="idButton" :title="titleButton" class="add-pog flex1 btn-btn" type="submit" :class="[id == 'edit-form']" @blur="tabOrder" @click="saveAndAdd(e)">Cất và In</button>
                 </div>
             </div>
         </div>
@@ -610,12 +613,19 @@ export default {
     },
     // Tự động focus mã nhân viên khi form mở
     mounted() {
-        // this.$refs.input.focus();
+        // this.$refs.inputFocus?.focus();
         
         this.employeeOld = structuredClone(this.employee);
     },
     
     methods: {
+        /**
+         * Xử lý tab order
+         * Author : Đinh Công Trứ (2/11/2022)
+         */
+        // tabOrder() {
+        //     this.$refs.inputFocus.focus();
+        // },
         /**
          * Xử lý tabcomponents
          * Author : Đinh Công Trứ (2/11/2022)
@@ -672,7 +682,7 @@ export default {
         },
         onCancelModal() {
     
-            this.$emit("closeModalRece");
+            this.$emit("closeModal");
       
         },
         /**
@@ -699,7 +709,7 @@ export default {
             }
             // Thêm nhân viên
             if (this.id == "add-form") {
-                this.title = Resource.TITLE.AddForm;
+                this.title = "Phiếu chi pc161";
                 this.idButton = "save";
                 this.titleButton = Resource.BUTTON.CATTHEM;
             }
@@ -932,7 +942,7 @@ export default {
 
             const me = this;
             // Thêm mới nhân viên
-            if (validate && this.id == "add-vendor") {
+            if (validate && this.id == "add-form") {
                 if (this.employee.dateOfBirth) {
                     this.employee.dateOfBirth = new Date(
                         this.employee.dateOfBirth
@@ -1183,6 +1193,7 @@ export default {
                 employeeName: true,
                 departmentName: true,
             },
+            refName: "inputFocus",
             employee: {},
             idButton: "",
             titleButton: "",
@@ -1238,5 +1249,11 @@ export default {
     width: calc(60% + 2px);
     height: 28px;
     padding-left: 12px;
+}
+.btn-btn:focus{
+    border: 3px solid #dcdcdc !important;
+}
+button.btn-btn {
+    outline: none;
 }
 </style>

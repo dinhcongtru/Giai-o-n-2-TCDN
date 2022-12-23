@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="row-botton">
-                    <div class="row-item flex-grow ">
+                    <div class="row-item flex-grow"  @click="onToggle">
                         <span class="icon-customer"></span>
                         <div class="row-text">Khách hàng</div>
                     </div>
@@ -22,11 +22,11 @@
                         <span class="icon-provide"></span>
                         <div class="row-text">Nhà cung cấp</div>
                     </router-link>
-                    <router-link to="/app/DI/DIEmployee" class="row-item flex-grow text-decoration">
+                    <div class="row-item flex-grow text-decoration"  @click="onToggle">
                         <span class="icon-employee"></span>
                         <div class="row-text">Nhân viên</div>
-                    </router-link>
-                    <div class="row-item flex-grow  border0">
+                    </div>
+                    <div class="row-item flex-grow  border0"  @click="onToggle">
                         <span class="icon-setting"></span>
                         <div class="row-text">Tùy chọn</div>
                     </div>
@@ -47,16 +47,37 @@
             </div>
         </div>
         </div>
-
+  <ms-dialog-vue
+        v-if="isError"
+        dialogName="validate"
+        :statusValidate="errorMgs"
+        @closeDialog="onCloseDialog"
+    />
 </template>
 <script>
 import Resource from '@/Resource/Resource';
+import msDialogVue from '@/components/base/ms-dialog.vue';
 export default {
-data(){
-return{
-    Resource : Resource
-}
-}
+    name:"CashProcess",
+    components:{msDialogVue},
+    data(){
+    return{
+        Resource : Resource,
+        isError: false,
+        errorMgs: false,
+    }
+    },
+    methods:{
+        onCloseDialog() {
+            this.isError = !this.isError;
+            
+        },
+        onToggle(){
+            this.isError = !this.isError;
+            this.errorMgs = Resource.ERROR.toolDevelop;
+            return false;
+        }
+    }
 }
 </script>
 <style scoped>

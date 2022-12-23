@@ -14,7 +14,7 @@
                                 
                                     />
                                 <div class="custom">
-                                    <input type="checkbox" class="check-custom" name="" id="" tabindex="20">
+                                    <input type="checkbox" class="check-custom" name="" id="" >
                                 <span style="padding-left: 10px">{{Resource.MODAL.isCustom}}</span>
                                 </div>
                                 
@@ -35,7 +35,7 @@
                                         <div class="ma">Mã số thuế
                                             <!-- <span style="color: red;">*</span> -->
                                         </div>
-                                        <ms-input type="text" :style="'inp-ma'"  :id="'txtEmployeeCode'"  tabindex="1" :autoFocus="true" autocomplete="off"/>
+                                        <ms-input ref="input" type="text" :style="'inp-ma'"  :id="'txtEmployeeCode'"  tabindex="1" :autoFocus="true" v-model="employee.telephoneNumber" autocomplete="off"/>
                                         
                                     </div>
                                     <div class="colum-name">
@@ -58,7 +58,7 @@
                                     <div class="name-dv">
                                         <div class="font700">Địa chỉ</div>
                                     </div>
-                                   <input type="text" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội" class="inp-ma chucdanh padding20" tabindex="4" autocomplete="off">
+                                   <input type="text" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội" class="inp-ma chucdanh padding20" tabindex="4" v-model="employee.addRess" autocomplete="off">
                                 </div>      
                         </div>
                         <div class="cont-r">
@@ -67,7 +67,7 @@
                                         <div class="ma">Điện thoại
                                             <!-- <span style="color: red;">*</span> -->
                                         </div>
-                                        <ms-input type="text" :style="'inp-ma'" :id="'txtEmployeeCode'" tabindex="5"  autocomplete="off"/>
+                                        <ms-input type="text" :style="'inp-ma'" :id="'txtEmployeeCode'" tabindex="5" v-model="employee.phoneNumber" autocomplete="off"/>
                                         
                                     </div>
                                     <div class="colum-name">
@@ -194,7 +194,7 @@
                                             title="Đơn vị không được để trống."
                                             :autoFocus="true"
                                             id="width206"
-                                            tabindex=""
+                                            tabindex="10"
                                             idStyle = "id2"
                                             :departmentList="departmentList"
                                             :departmentId="employee.departmentID"
@@ -206,11 +206,11 @@
                                 </div>
                                 <div class="colum-name coding">
                                         <div class="name coding">Số ngày được nợ</div>
-                                        <input type="text" class="inp-name inp-coding" name="input"  tabindex="" id="txtDTCoDinh"  autocomplete="off">
+                                        <input type="text" class="inp-name inp-coding" name="input"  tabindex="11" id="txtDTCoDinh"  autocomplete="off">
                                 </div>
                                 <div class="colum-name email">
                                     <div class="name email">Số nợ tối đa</div>
-                                    <input type="text" class="inp-name inp-email" name="input"  tabindex="" id="txtEmail"  autocomplete="off">
+                                    <input type="text" class="inp-name inp-email" name="input"  tabindex="12" id="txtEmail"  autocomplete="off">
                                     
                                 </div>
                             </div>
@@ -222,7 +222,7 @@
                                             title="Đơn vị không được để trống."
                                             idStyle = "id1"
                                             id="width206"
-                                            tabindex=""
+                                            tabindex="13"
                                             
                                             :departmentList="departmentList"
                                             :departmentId="employee.departmentID"
@@ -243,7 +243,7 @@
                     <button class="f-pog-l closeEmployee" tabindex="14" id="cancel-add-form" title="Hủy(Ctrl F9)" @click="onCancelModal">{{Resource.BUTTON.HUY}}</button>
                     <div class="f-pog-r">
                         <ms-button  class="cat-pog" tabindex="15" id="cancel-add-form" title="Cất" type="submit" @click="save()"/>
-                        <ms-button  tabindex="16" :id="idButton" :title="titleButton" class="add-pog" type="submit" :class="[id == 'edit-form']" @click="saveAndAdd(e)"/>
+                        <ms-button  tabindex="16" :id="idButton" :title="titleButton" class="add-pog" type="submit" :class="[id == 'edit-vendor']" @blur="tabOrder" @click="saveAndAdd(e)"/>
                     </div>
                 </div>
             </div>
@@ -341,9 +341,9 @@ export default {
          * Thực hiện xử lý tab order
          **  Author: Đinh Công Trứ(2/11/2022)
          */
-        // tabOrder() {
-        //     this.$refs.input.focus();
-        // },
+        tabOrder() {
+            this.$refs.input.$refs.input.focus();
+        },
         /**
          * Thực hiện xử lý đóng form
          **  Author: Đinh Công Trứ(2/11/2022)
@@ -558,7 +558,7 @@ export default {
 
         userInfo(id) {
             try {
-                if (this.id == "edit-form") {
+                if (this.id == "edit-vendor") {
                     const me = this;
                     EmployeeRepository.getInfoEmployee(id)
                     .then((response) => {
@@ -703,7 +703,7 @@ export default {
                 this.isWarring =  false;
             }
             // Sửa nhân viên
-            if ( validate && this.id == "edit-form") {
+            if ( validate && this.id == "edit-vendor") {
                 if (this.employee.dateOfBirth) {
                     this.employee.dateOfBirth = new Date(
                         this.employee.dateOfBirth
@@ -825,7 +825,7 @@ export default {
                 this.isWarring =  false;
             }
             // Sửa nhân viên
-            if (validate && this.id == "edit-form") {
+            if (validate && this.id == "edit-vendor") {
                 if (this.employee.dateOfBirth) {
                     this.employee.dateOfBirth = new Date(
                         this.employee.dateOfBirth

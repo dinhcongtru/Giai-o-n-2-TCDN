@@ -5,7 +5,6 @@
                 <th align="center" class="thead1">
                     <input 
                         id="checkbox-header"
-                        ref="checkBoxAll"
                         type="checkbox" 
                         class="input-check-table"
                         @click="onToggleCheckAll"
@@ -14,29 +13,32 @@
                         
                         />
                 </th>
-                <th align="left" class="thead2" style="min-width:220px">MÃ NHÀ CUNG CẤP</th>
-                <th align="left" class="thead3" style="min-width:150px">NHÓM KH, NCC</th>
-                <th align="left" style="min-width:240px">TÊN NHÀ CUNG CẤP</th>
-                <th align="left" style="min-width:133px">MÃ SỐ THUẾ</th>
-                <th align="left" style="min-width:150px" title="Số chứng minh nhân dân">SỐ CMND</th>
-                <th align="left" style="min-width:200px">CHI NHÁNH</th>
-                
-                <th class="item-cn">CHỨC NĂNG</th>
+                <th align="left" class="thead2" style="min-width:120px">{{Resource.NAME_DISPLAY.EMPLOYEECODE}}</th>
+                <th align="left" style="min-width:180px">{{Resource.NAME_DISPLAY.EMPLOYEENAME}}</th>
+                <th align="left" style="min-width:60px">{{Resource.NAME_DISPLAY.GENDER}}</th>
+                <th align="center" style="min-width:100px">{{Resource.NAME_DISPLAY.DATEOFBIRTH}}</th>
+                <th align="left" style="min-width:115px" title="Số chứng minh nhân dân">{{Resource.NAME_DISPLAY.INDENTITYNUMBER}}</th>
+                <th align="left" style="min-width:134px">{{Resource.NAME_DISPLAY.POSITION}}</th>
+                <th align="left" style="min-width:136px">{{Resource.NAME_DISPLAY.DEPARTMENT}}</th>
+                <th align="left" style="min-width:120px">{{Resource.NAME_DISPLAY.BANKNUMBER}}</th>
+                <th align="left" style="min-width:156px">{{Resource.NAME_DISPLAY.BANKNAME}}</th>
+                <th align="left" style="min-width:235px;">{{Resource.NAME_DISPLAY.BRANCHNAME}}</th>
+                <th class="item-cn">{{Resource.TOOLBAR.TOOL}}</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="(employee, index) in employees" class="trTable" :key="employee.employeeID" :class="{'background-table': employee.IsChecked}" @dblclick="openFormDetail(index, 'edit-vendor')">
                 <td align="center" class="th1" :class="{ 'background-table': employee.IsChecked }"><input type="checkbox" :id= employee.employeeID class="input-check-table" ref="checkboxRow" v-model="employee.IsChecked" @click="handleClickCheck()"></td>
                 <td  class="th2" :class="{ 'background-table': employee.IsChecked }">{{ employee.employeeCode }}</td>
-                <td  class="th3" :class="{ 'background-table': employee.IsChecked }"></td>
-                <td>{{ employee.employeeName || "" }}</td>
-                <td>{{ employee.telephoneNumber || "" }}</td>
+                <td :class="{ 'background-table': employee.IsChecked }">{{ employee.employeeName || "" }}</td>
+                <td>{{ Method.fomatGender(employee.gender) || "" }}</td>
+                <td align="center">{{ Method.handleDOB(employee.dateOfBirth) || "" }}</td>
                 <td>{{ employee.identityNumber || "" }}</td>
-                <td>{{ employee.bankBranchName || "" }}</td>
-                <!-- <td>{{ employee.departmentName || "" }}</td>
+                <td>{{ employee.jobPositionName || "" }}</td>
+                <td>{{ employee.departmentName || "" }}</td>
                 <td>{{ employee.bankAccountNumber || "" }}</td>
                 <td>{{ employee.bankName || "" }}</td>
-                <td>{{ employee.bankBranchName || "" }}</td> -->
+                <td>{{ employee.bankBranchName || "" }}</td>
                 <td class="td-cn" :class="[featureDropdown == index && zIndex5,employee.IsChecked && backGroundTbl,]" >
                     <div class="cn-edit">
                         <div class="edit-table" id="edit-nv" @click.self="onToggleModal(index, 'edit-vendor')">{{Resource.CONTENT.btnEdit}}</div>
@@ -56,7 +58,7 @@
                    
                 </td>
                 <!-- <the-modal v-if="isModal == index" :employeeCode="employee.employeeCode" :employeeID="employee.employeeID" :id="id" @closeModal="onToggleModal" @refreshData="resfreshToPageOne" /> -->
-                <vendor-details v-if="isModal == index" :employeeCode="employee.employeeCode" :employeeID="employee.employeeID" :id="id" @closeModal="onToggleModal" @refreshData="resfreshToPageOne" />
+                <receipt-detail v-if="isModal == index" :employeeCode="employee.employeeCode" :employeeID="employee.employeeID" :id="id" @closeModal="onToggleModal" @refreshData="resfreshToPageOne" />
 
             </tr>
         </tbody>
@@ -83,14 +85,14 @@
 import msDialog from './base/ms-dialog.vue';
 import msLoading from './base/ms-loading.vue';
 // import TheModal from './TheModal.vue';
-import VendorDetails from '@/views/Vendor/VendorDetails.vue';
+import ReceiptDetail from '@/views/Receipt/ReceiptDetalis.vue';
 // import {RepositoryFactory} from '../Repository/RepositoryFactory';
 //  const EmployeeRepository = RepositoryFactory.get('Employees');
  import Resource  from '@/Resource/Resource';
  import functionTable  from '@/methods/methods'
 export default {
-    name: "TheTable",
-    components: { msDialog, msLoading ,VendorDetails},
+    name: "TableReceipt",
+    components: { msDialog, msLoading ,ReceiptDetail},
     watch: {
         /**
          * Thực hiện đưa dữ liệu tổng sô bản ghi lên component BaseTable
@@ -113,14 +115,6 @@ export default {
         },
     },
     methods: {
-        /**
-         * xử lý uncheckbox
-         * Đinh công Trứ(30/10/2022)
-         */
-         unCheckAll(){
-            this.$refs.checkBoxAll.checked = false;
-            this.selected = [];
-         },
         /**Truyền thông báo ra bên ngoài load lại data
          * Author: Đinh Công Trứ(30/10/2022)
          */

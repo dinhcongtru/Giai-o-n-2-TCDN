@@ -1,6 +1,7 @@
 <template lang="">
     <div :id="idStyle" class="combobox inf-chucvu">
         <input 
+            
             :type="type" 
             autocomplete = "off"
             ref="input"
@@ -11,7 +12,6 @@
             :id="id"
             :tabindex="tabindex"
             @input="updateSearch"
-            
             @blur="validateDropdown()"
             >
             
@@ -88,10 +88,12 @@ watch: {
 },
 
 mounted(){
-        if(this.autoFocus)
+    if(this.autoFocus)
     {
-    this.$refs.input.focus();
+        this.$refs.input.focus();
     }
+   
+    
 }, 
 
 computed:{

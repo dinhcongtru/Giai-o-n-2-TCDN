@@ -110,6 +110,7 @@ export default{
         errorEdit : "Sửa nhân viên không thành công, vui lòng thử lại sau!",
         vendorNameError: "Tên nhà cung cấp không được để trống!",
         vendorCodeError: "Mã nhà cung cấp không được để trống!",
+        toolDevelop: "Tính năng đang phát triển, vui lòng thử lại!",
     },
     MODAL :{
         isCustom : "Là khách hàng",

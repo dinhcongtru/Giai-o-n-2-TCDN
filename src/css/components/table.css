@@ -74,6 +74,11 @@ table .thead2{
     left: 52px;
 
 }
+table .thead3{
+    position: sticky;
+    left: 304px !important;
+
+}
 table .th1{
     position: sticky;
     left: 0;
@@ -83,6 +88,11 @@ table .th1{
 table .th2{
     position: sticky;
     left: 52px;
+    background-color: white;
+}
+table .th3{
+    position: sticky;
+    left: 304px;
     background-color: white;
 }
 table .item-cn{
@@ -97,8 +107,8 @@ table .td-cn{
 }
 
 ::-webkit-scrollbar{
-    width: 6px;
-    height: 6px;
+    width: 9px;
+    height: 9px;
 }
 ::-webkit-scrollbar-thumb{
     background: #b8bcc3;

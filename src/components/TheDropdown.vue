@@ -1,6 +1,8 @@
 <template lang="">
     <div :id="idStyle" class="combobox inf-chucvu">
         <input 
+            :disabled="disable"
+            :readonly="isReadonly"
             :type="type" 
             autocomplete = "off"
             ref="input"
@@ -56,6 +58,7 @@ props: {
     label: String,
     tabindex: String,
     disable: Boolean,
+    isReadonly:Boolean,
     type: String,
     id: String,
     placeholder: String,
@@ -92,6 +95,7 @@ mounted(){
     {
     this.$refs.input.focus();
     }
+    this.refName;
 }, 
 
 computed:{
