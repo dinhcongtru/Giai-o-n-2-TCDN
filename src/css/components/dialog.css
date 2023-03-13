@@ -100,7 +100,7 @@
 }
 .inf-chucvu{
     margin: 0;
-    
+    position: relative;
 }
 .combo-chucvu{
     display: flex;

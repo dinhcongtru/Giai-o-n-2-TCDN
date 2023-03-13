@@ -83,13 +83,14 @@
 }
 .obj-ma {
     padding-right: 12px;
-    width: 40%;
+    width: 48%;
 }
 .obj-ma-title {
     font-size: 12px;
     font-weight: 700;
     color: #212121;
     padding-bottom: 4px;
+    margin-bottom: 0 !important;
 }
 .obj-name {
     width: 60%;
@@ -148,15 +149,14 @@ input.w-full {
     width: calc(100% - 17px);
 }
 .kem-theo {
-    width: 60%;
+    width: 30%;
 }
 input.input-number {
     outline: none;
-    height: 28px;
     padding-left: 12px;
     border-radius: 2px;
     border: 1px solid #babec5;
-    width: 30%;
+    width: 100%;
     font-family: 'rotosans';
     font-size: 13px;
     height: 28px;
@@ -168,7 +168,7 @@ input.input-number {
     /* display: flex; */
     /* align-items: center; */
     line-height: 32px;
-    padding-left: 6.5px;
+    padding-left: 34.5px;
 }
 .merge{
     border-right: 1px solid #babec5; 
@@ -176,6 +176,16 @@ input.input-number {
 }
 input[type="text"]:focus{
     border: 1px solid #2ca01c;
+}
+.dx-texteditor.dx-state-focused.dx-editor-outlined{
+    border: 1px solid #2ca01c !important;
+}
+.dx-texteditor.dx-editor-outlined{
+    border-radius: 2px !important;
+    border: 1px solid #babec5 !important;
+}
+.dx-texteditor.dx-state-hover{
+    border-color: none;
 }
 .datepacker{
     width: 60%;
@@ -220,6 +230,7 @@ h1.summary-info-number {
 .layout-bot-main {
     padding-left: 24px;
     padding-bottom: 12px;
+    /* height: 220px; */
 }
 .main-child {
     padding-left: 24px;

@@ -31,3 +31,18 @@ body{
     font-family: italic ;
     src: url(../assets/fonts/notosans-italic.1c1aaac9.woff2);
 }
+.pb-10 {
+    padding-bottom: 10px;
+}
+.justify-spacebetween {
+    justify-content: space-between;
+    align-items: center;
+}
+.w-800 {
+    width: 800px!important;
+    min-width: 800px;
+}
+.rotation-180 {
+    transform: rotate(180deg);
+    transition: transform .3s;
+}

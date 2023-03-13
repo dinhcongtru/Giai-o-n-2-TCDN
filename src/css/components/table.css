@@ -25,26 +25,27 @@
 }
 
 td{
-    border-collapse:collapse ;
-    border: 1px solid #f1f1f1;
-    height: 47px;
-    border-left: 0;
-    padding: 0px 16px;
+    border-collapse: collapse;
+    /* border: 1px solid #f1f1f1; */
+    height: 32px;
+    /* border-left: 0; */
+    padding: 0px 10px;
     z-index: 5;
-    background: white;
+    /* background: white; */
 }
+
 th{
-    background-color: #e5e5e5;
-    padding: 0px 16px;
-    border-collapse:collapse ;
-    border: 1px solid #f1f1f1;
-    height: 47px;
-    border-left: 0;
-    font-size: 12px;
+    text-align: left;
+    background-color: #eceef1;
+    padding: 0px 10px;
+    /* border-collapse: collapse; */
+    /* border: 1px solid #f1f1f1; */
+    height: 32px;
 }
-tr:hover{
-    background-color: #edf6f6;
-}
+/* tr.trGroupVendor:hover{
+    background-color: #ebedf0;
+    color: #2ca01c;
+} */
 /* .data-table{
     overflow: auto;
     height: calc(100vh - 335px);
@@ -57,6 +58,15 @@ tr:hover{
     background-color: white;
     margin-right: 20px;
 }
+
+.trGroupVendor:hover {
+    background-color: #ebedf0 !important;
+    color: #2ca01c;
+
+}
+/* .trGroupVendor:hover td {
+    background: #CCE4FF0;
+} */
 
 table thead tr{
     position: sticky;
@@ -121,10 +131,10 @@ table{
     width: 100%;
     border-radius: 4px;
 }
-.table tbody tr:hover td {
+/* .table tbody tr:hover td {
     background: #e5f3ff!important;
     cursor: pointer;
-}
+} */
 .item-cn{
     text-align: center;
     padding-right: 16px;
@@ -264,7 +274,7 @@ table{
 }
 
 #data-item:hover {
-    background-color: #CCE4FF;
+    /* background-color: #CCE4FF; */
     border-radius: 4px;
 }
 .borderIconCN{

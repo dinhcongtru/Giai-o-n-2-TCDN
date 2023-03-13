@@ -7,7 +7,7 @@
 }
 .input-cbx{
     outline: none;
-    height: 32px;
+    height: 28px;
     padding-left: 12px;
     border-radius: 2px;
     border: 1px solid #babec5;
@@ -54,7 +54,7 @@
     
 }
 .data-item:hover{
-    background-color: #d3d3d3;
+    /* background-color: #d3d3d3; */
     color: #50B83C;
     border-radius: 4px;
     cursor: pointer;
@@ -74,7 +74,7 @@
     
 }
 .data-Company:hover{
-    background-color: #d3d3d3;
+    /* background-color: #d3d3d3; */
     color: #50B83C;
     border-radius: 4px;
     cursor: pointer;
@@ -87,7 +87,7 @@
     
 }
 .data-login:hover{
-    background-color: #d3d3d3;
+    /* background-color: #d3d3d3; */
     color: #50B83C;
     border-radius: 4px;
     cursor: pointer;

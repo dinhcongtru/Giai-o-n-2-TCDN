@@ -28,7 +28,7 @@
            
             <ul class="dropdown-list" v-if="isOpenDropdown">
                 <li
-                    v-for="(department, index) in filters"
+                    v-for="(department, index) in departmentList"
                     :key="index"
                     class="dropdown-list-item"
                     :class="[
@@ -102,15 +102,15 @@ computed:{
     // currentDepartment() {
     //     ret
     // },
-    filters(){
-        const self = this;
-        return self.departmentList.filter((item) => {
+    // filters(){
+    //     const self = this;
+    //     return self.departmentList.filter((item) => {
   
-          return item.departmentName.toLowerCase().includes(self.currentDepartment.toLowerCase())
+    //       return item.departmentName.toLowerCase().includes(self.currentDepartment.toLowerCase())
 
-          });
+    //       });
         
-    }
+    // }
 }, 
 methods: {
     /**xử lý gán giá trị để active giá trị được chọn

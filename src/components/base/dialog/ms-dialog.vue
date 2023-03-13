@@ -2,14 +2,14 @@
     <div class="row-dialog" >
         <div class="pogup warring">
             <div class="content-dialog">
-                <span v-if="dialogName == 'delete' || dialogName == 'deleteBatch' || dialogName == 'checkCode'" class="icon-warrring" id="icon-warrring"></span>
+                <span v-if="dialogName == 'delete' || dialogName == 'deleteAllRows' || dialogName == 'deleteBatch' || dialogName == 'checkCode'" class="icon-warrring" id="icon-warrring"></span>
                 <span v-if="dialogName == 'validate'" class="dialog-body-validate"></span>
                 <span v-if="dialogName == 'warring'" class="mi-48"></span>
                 <div class="title-warring" style="font-size: 14px;">{{ renderStatus() }}</div>
             </div>
             <div class="foot-dialog" :class="dialogName == 'validate' && 'alig-centre'">
                 <button class="btn-add btn-warring delete-btn" id="warring"  @click="onClose" v-if="dialogName == 'warring'" >{{Resource.DIALOG.HUY}}</button>
-                <button class="btn-add btn-warring delete-btn" id="margin40" v-if="dialogName == 'delete'|| dialogName == 'validate'|| dialogName == 'deleteBatch'" @click="onClose" :class="dialogName == 'validate' && 'pri-btn'"> {{ (dialogName == "delete"  && buttonText) || Resource.DIALOG.DONG }}</button>
+                <button class="btn-add btn-warring delete-btn" id="margin40" v-if="dialogName == 'delete'|| dialogName == 'deleteAllRows'|| dialogName == 'validate'|| dialogName == 'deleteBatch'" @click="onClose" :class="dialogName == 'validate' && 'pri-btn'"> {{ (dialogName == "delete"  && buttonText) || Resource.DIALOG.DONG }}</button>
                 <div class="dialog-footer-btn">
                     <button class="btn-add btn-warring delete-btn" v-if="dialogName == 'warring'" id="warring-item"  @click="onCloseDialog" :class="dialogName == 'validate' && 'pri-btn'"> {{ Resource.DIALOG.KHONG }}</button>
                     <button
@@ -17,6 +17,14 @@
                         id="{{buttonId}}"
                         @click="handleDelete"
                         v-if="dialogName == 'delete'"
+                    >
+                        {{Resource.DIALOG.CO}}
+                    </button>
+                    <button
+                        class="btn-add btn-warring"
+                        id="{{buttonId}}"
+                        @click="handleDeleteAllRows"
+                        v-if="dialogName == 'deleteAllRows'"
                     >
                         {{Resource.DIALOG.CO}}
                     </button>
@@ -44,10 +52,11 @@
 <script>
 import {RepositoryFactory} from '@/Repository/RepositoryFactory';
 import Resource from '@/Resource/Resource';
- const EmployeeRepository = RepositoryFactory.get('Employees');
+//  const EmployeeRepository = RepositoryFactory.get('Employees');
+ const VendorRepository = RepositoryFactory.get('Vendors');
 export default {
     name: "msDialog",
-    props: ["dialogName", "employeeID", "employeeCode", "statusValidate","selected"],
+    props: ["dialogName", "vendorID", "vendorCode", "statusValidate","selected"],
     data() {
         return {
             Resource :Resource,
@@ -55,8 +64,7 @@ export default {
             waringValidateStatus: null,
             buttonId: null,
             buttonText: "Không",
-            employees: null,
-            employee: {}
+           
         };
     },
     methods: {
@@ -93,7 +101,7 @@ export default {
             let _this = this;
             
             // xóa 1 nhân viên theo ID
-            EmployeeRepository.deleteEmployeeByID(this.employeeID)
+            VendorRepository.deleteVendorByID(this.vendorID)
             .then(() => {
                    
                    _this.onClose();
@@ -106,11 +114,14 @@ export default {
                });
             
         },
+        handleDeleteAllRows(){
+            this.$emit("eConfirmDelete");
+        },
 
-        // xóa nhiều nhân viên 
+        // xóa nhiều nhà cung cấp
         handleDeleteBatch(){
             let _this = this;
-            EmployeeRepository.deleteBatch({EmployeeIDs:this.selected})
+            VendorRepository.deleteBatch({vendorIDs:this.selected})
             .then(function()  { 
                     _this.onClose();
                     _this.$emit("deleteSuccess");
@@ -130,7 +141,10 @@ export default {
                 return Resource.TEXTDIALOG.deleteBatch;
             }
             if (this.dialogName == "delete") {
-                return Resource.TEXTDIALOG.delete +`<${this.employeeCode}>`+ Resource.TEXTDIALOG.textno;
+                return Resource.TEXTDIALOG.deleteVendor +`<${this.vendorCode}>`+ Resource.TEXTDIALOG.textno;
+            }
+            if (this.dialogName == "deleteAllRows") {
+                return Resource.ERROR.deleteAllRows;
             }
             if (this.dialogName == "validate") {
                 return this.statusValidate;

@@ -1,0 +1,71 @@
+/*------------------------------------
+    Custom Tooltip
+--------------------------------------*/
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltiptext {
+    visibility: visible;
+    min-width: 70px;
+    max-width: 200px;
+    background-color: #505050;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    /* bottom: 110%;
+    left: 50%;
+    margin-left: -60px; */
+}
+
+
+/*mũi tên bên dưới*/
+
+.bottom.tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #505050 transparent transparent transparent;
+}
+
+.top.tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: rotate(180deg);
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #505050 transparent transparent transparent;
+}
+
+.rectangle.tooltiptext {
+    border-radius: 0px;
+}
+
+.rectangle.tooltiptext::after {
+    display: none;
+    content: "";
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: rotate(180deg);
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #505050 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}

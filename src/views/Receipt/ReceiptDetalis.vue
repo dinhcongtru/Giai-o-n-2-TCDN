@@ -5,21 +5,16 @@
                 <div class="recent-log-btn"></div>
                 <div class="title-payment">{{ title }}</div>
                 <div class="header-detail-input">
-                    <the-dropdown
-                        type="text"
-                        title="Đơn vị không được để trống."                   
+                    <ms-dropdown-info
+                        type="text"                 
                         id="width334"
                         tabindex="1"
                         :autoFocus="true"
                         :isReadonly="true"
-                        :refName="refName"
+                        ref="input"
                         idStyle="id9"
-                        :departmentList="departmentList"
-                        :departmentId="employee.departmentID"
-                        :departmentName="employee.departmentName"
-                        :departmentError="error.departmentName"
-                        @departmentId="getDepartmentId($event)"
-                        @departmentName="getDepartmentName($event)"
+                        :itemData="optionReceipt"
+                        v-model="optionDefault"
                     />
                 </div>
                 <div class="header-detail-buttons">
@@ -27,8 +22,8 @@
                         <div class="mi-tour"></div>
                         <div class="tour-laybel">Hướng dẫn</div>
                     </div>
-                    <div class="con-ms-tooltip" title="Tùy chỉnh giao diện">
-                        <div class="mi-setting-detail"></div>
+                    <div class="con-ms-tooltip" title="Tùy chỉnh giao diện" @click="openSettingDialog">
+                        <div class="mi-setting-detail" ></div>
                     </div>
                     <div class="con-ms-tooltip" title="Giúp(F1)">
                         <div class="mi-help"></div>
@@ -44,66 +39,110 @@
                 <div class="w-4/5 right-separate">
                     <div class="merge">
                         <div class="obj-one">
-                            <div class="obj-ma">
-                                <div class="obj-ma-title">Mã đối tượng</div>
-                                <the-dropdown
-                                type="text"
-                                title="Đơn vị không được để trống."                   
+                            <ms-combobox
+                                class="obj-ma revMargin"
+                                v-model="payment.account_object_id"
+                                :options="listObject"
+                                :appendToBody="true"
+                                tabInput="2"
                                 idStyle="id8"
-                                tabindex="2"
-                                :departmentList="departmentList"
-                                :departmentId="employee.departmentID"
-                                :departmentName="employee.departmentName"
-                                :departmentError="error.departmentName"
-                                @departmentId="getDepartmentId($event)"
-                                @departmentName="getDepartmentName($event)"
+                                value="value"
+                                :searchable="true"
+                                :listHeader="headerObjectCode"
+                                :closeOnSelect="true"
+                                labelText="Mã đối tượng"
+                                label="label"
+                                :lazyLoading="true"    
+                                @eLoadNext="getObjectOptions"
+                                @onSelected="handleSelected"
+                                :disabled="this.id == 'edit-form' ? true : false"
+                                @eSearching="getObjectOptions"                         
                             />
-                            </div>
-                            <div class="obj-name">
-                                <div class="obj-ma-title">Tên đối tượng</div>
-                                <input type="text" class="input-objName" tabindex="3">
-                            </div>
+
+                            <ms-input
+                            class="obj-name"
+                            classLaybel="obj-ma-title"
+                            styleClass="input-objName"
+                            :tabInput="3"
+                            labelText="Tên đối tượng"
+                            autocomplete="off"
+                            :maxlength="255"
+                            v-model="payment.account_object_name"
+                             @input="bindDescription(payment.account_object_name)"
+                            :disabled="this.id == 'edit-form' ? true : false"
+                            />
+
                         </div>
                         <div class="obj-two">
-                            <div class="obj-ma">
-                                <div class="obj-ma-title">Người nhận</div>
-                                <input type="text" class="input-nhan" tabindex="4">
-                            </div>
-                            <div class="obj-name">
-                                <div class="obj-ma-title">Địa chỉ</div>
-                                <input type="text" class="input-objName" tabindex="5">
-                            </div>
+                            <ms-input
+                            class="obj-ma"
+                            classLaybel="obj-ma-title"
+                            styleClass="input-nhan"
+                            :tabInput="4"
+                            labelText="Người nhận"
+                            autocomplete="off"
+                            
+                            />
+                            <ms-input
+                            class="obj-name"
+                            classLaybel="obj-ma-title"
+                            styleClass="input-objName"
+                            :tabInput="5"
+                            labelText="Địa chỉ"
+                            autocomplete="off"
+                            
+                            />
                         </div>
                         <div class="obj-three">
-                            <div class="regen">
-                                <div class="obj-ma-title">Lý do chi</div>
-                                <input type="text" name="" id="" class="w-full" value="Chi tiền cho" tabindex="6">
-                            </div>
+                            <ms-input
+                            class="regen"
+                            classLaybel="obj-ma-title"
+                            styleClass="w-full"
+                            :tabInput="6"
+                            labelText="Lý do chi"
+                            
+                            v-model="payment.journal_memo"
+                            :disabled="this.id == 'edit-form' ? true : false"
+                            @input="onMasterReasonInput(payment.journal_memo)"
+                            autocomplete="off"
+                            
+                            />
                         </div>
                     </div>
                     <div class="obj-four">
-                        <div class="obj-ma">
-                            <div class="obj-ma-title">Nhân viên</div>
-                            <the-dropdown
-                            type="text"
-                            title="Đơn vị không được để trống."                   
-                            idStyle="id7"
-                            tabindex="7"
-                            :departmentList="departmentList"
-                            :departmentId="employee.departmentID"
-                            :departmentName="employee.departmentName"
-                            :departmentError="error.departmentName"
-                            @departmentId="getDepartmentId($event)"
-                            @departmentName="getDepartmentName($event)"
-                        />
+                        <ms-combobox
+                                class="obj-ma revMargin"
+                                labelClass="obj-ma-title"
+                                tabInput="7"
+                                :options="listEmployeeOptions"
+                                
+                                :appendToBody="true"
+                                :searchable="true"
+                                idStyle="id7"
+                                :listHeader="headerEmployee"
+                                :closeOnSelect="true"
+                                labelText="Nhân viên"
+                                label="label"
+                                :lazyLoading="true"
+                                @eLoadNext="loadNextEmployee"
+                                
+                            /> 
+                        <div class="merge-row">
+                            <ms-input
+                            class="kem-theo"
+                            classLaybel="obj-ma-title"
+                            styleClass="input-number"
+                            :tabInput="8"
+                            labelText="Kèm theo"
+                            :isNumberInput="true"
+                            :maxlength="18"
+                            placeholder="Số lượng"
+                            autocomplete="off"
+                            
+                            />
+                            <div class="title-gim">chứng từ gốc</div>
                         </div>
-                        <div class="kem-theo">
-                            <div class="obj-ma-title">Kèm theo</div>
-                            <div class="merge-row">
-                                <input type="text" name="" id="" class="input-number" placeholder="Số lượng" tabindex="8">
-                                <div class="title-gim">chứng từ gốc</div>
-                            </div>
-                        </div>
+                        
                     </div>
                     <div class="obj-five">
                         <div class="row-tham-chieu">Tham chiếu</div>
@@ -113,441 +152,112 @@
                 <div class="w-1/5 width20">
                     <div class="m-row left-separate">
                         <div class="obj-ma-title">Ngày hạch toán</div>
-                        <input type="date" class="datepacker" value="2020-12-20" tabindex="9">
+                        <DxDateBox 
+                            drop-down-button-template="loadIcon" 
+                            ref="posted_date"
+                            v-model:value="payment.posted_date"
+                            :format="dateFormat"
+                            placeholder="Ngày hạch toán"
+                            :value="formatDate()" 
+                            :disabled="this.id == 'edit-form' ? true : false"
+                            @change="onPostedDateChanged($event)" 
+                            @pick="onPostedDatePicked($event)"
+                            tabIndex="9">
+                            <template #loadIcon="{}">
+                                <div class="iconDatePicker"
+                        >
+                                    
+                                </div>
+                            </template>
+                        </DxDateBox>
                     </div>
                     <div class="m-row left-separate">
                         <div class="obj-ma-title">Ngày phiếu chi</div>
-                        <input type="date" class="datepacker"  value="2020-12-20" tabindex="10">
+                        <DxDateBox 
+                        drop-down-button-template="loadIcon" 
+                        ref="ref_date"
+                        v-model="payment.ref_date"
+                        :format="dateFormat"
+                        placeholder="Ngày phiếu chi"
+                        :disabled="this.id == 'edit-form' ? true : false"
+                        :value="formatDate()" 
+                        tabIndex="10">
+                            <template #loadIcon="{}">
+                            <div class="iconDatePicker"
+                        >
+                                
+                            </div>
+                            </template>
+                        </DxDateBox>
                     </div>
-                    <div class="m-row left-separate">
-                        <div class="obj-ma-title">Số phiếu chi</div>
-                        <input type="text" class="datepacker sochi" value="pc161" tabindex="11">
-                    </div>
+                    <ms-input
+                            class="m-row left-separate"
+                            classLaybel="obj-ma-title"
+                            styleClass="datepacker sochi"
+                            :tabInput="11"
+                            labelText="Số phiếu chi"
+                            :blur="validatePaymentCode(payment.ca_payment_code)" 
+                            ref="ca_payment_code"
+                            v-model="payment.ca_payment_code"
+                             :disabled="this.id == 'edit-form' ? true : false"
+                            autocomplete="off"                           
+                            />
+ 
                 </div>
                 <div class="w-1/4 summary-info">
                     <div class="summary-info-title">Tổng tiền</div>
-                    <h1 class="summary-info-number">0,0</h1>
+                    <h1 class="summary-info-number">
+                        {{ payment.total_amount ? payment.total_amount : "0,0" }}
+                    </h1>
                 </div>
             </div>
             <div class="layout-bottom">
                 <div class="header-bottom">
                     <div class="title-bottom">Hạch toán</div>
-                    <div class="merge-bottom">
-                        <div class="title-type-money">Loại tiền</div>
-                        <div class="type-money">
-                            <the-dropdown
-                                type="text"
-                                title="Đơn vị không được để trống."                   
-                                id="w100"
-                                idStyle="id6"
-                                tabindex="12"
-                                :departmentList="departmentList"
-                                :departmentId="employee.departmentID"
-                                :departmentName="employee.departmentName"
-                                :departmentError="error.departmentName"
-                                @departmentId="getDepartmentId($event)"
-                                @departmentName="getDepartmentName($event)"
-                            />
-                        </div>
-                    </div>
+                    <ms-combobox
+                        styleInput="w100"
+                        labelClass="labelPayment"
+                        class="merge-bottom revMargin"
+                        styleDrop="right20"
+                        v-model="payment.currency_id"
+                        :disabled="this.id == 'edit-form' ? true : false"
+                        :options="typeMoney"
+                        :appendToBody="true"
+                        :isPlus="false"
+                        tabInput="12"
+                        idStyle="id6"
+                        :searchable="true"
+                        :listHeader="headerTypeMoney"
+                        :closeOnSelect="true"
+                        labelText="Loại tiền"
+                        label="label"
+                        :lazyLoading="true"
+                        
+                    />
                 </div>
                 <div class="layout-bot-main">
                     <div class="main-layout-table">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th align="center" class="thead1" style="min-width:20px">
-                                        #
-                                    </th>
-                                    <th align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</th>
-                                    <th align="left" style="min-width:180px">TK NỢ</th>
-                                    <th align="left" style="min-width:60px">TK CÓ</th>
-                                    <th align="right" style="min-width:100px">SỐ TIỀN</th>
-                                    <th align="left" style="min-width:115px">ĐỐI TƯỢNG</th>
-                                    <th align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</th>
-                                    <th align="left" style="min-width:120px">TK NGÂN HÀNG</th>
-                                    <th align="left" style="min-width:156px">KHẾ ƯỚC VAY</th>
-                                    <th align="left" style="min-width:235px;">KHOẢN MỤC CP</th>
-                                    <th align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</th>
-                                    <th align="left" style="min-width:235px;">ĐƠN VỊ</th>
-                                    <th align="left" style="min-width:235px;">TÊN ĐƠN VỊ</th>
-                                    <th align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</th>
-                                    <th align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</th>
-                                    <th align="left" style="min-width:235px;">CÔNG TRÌNH</th>
-                                    <th align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</th>
-                                    <th align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</th>
-                                    <th align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</th>
-                                    <th align="left" style="min-width:235px;">ĐƠN MUA HÀNG</th>
-                                    <th align="left" style="min-width:235px;">HỢP ĐỒNG MUA</th>
-                                    <th align="left" style="min-width:235px;">MỤC THU/CHI</th>
-                                    <th align="left" style="min-width:235px;">TÊN MỤC THU/CHI</th>
-                                    <th align="left" style="min-width:235px;">MÃ THỐNG KÊ</th>
-                                    <th align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</th>
-                                    <th align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</th>
-                                    <th align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</th>
-                                    <th align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</th>
-                                    <th align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</th>
-                                    <th align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</th>
-                                    <th align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</th>
-                                    <th class="item-cn">
-                                       
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>   
-                                    <td align="center" class="thead1" style="min-width:20px">
-                                        1
-                                    </td>
-                                    <td align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</td>
-                                    <td align="left" style="min-width:180px">TK NỢ</td>
-                                    <td align="left" style="min-width:60px">TK CÓ</td>
-                                    <td align="right" style="min-width:100px">SỐ TIỀN</td>
-                                    <td align="left" style="min-width:115px">ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:120px">TK NGÂN HÀNG</td>
-                                    <td align="left" style="min-width:156px">KHẾ ƯỚC VAY</td>
-                                    <td align="left" style="min-width:235px;">KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN MUA HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG MUA</td>
-                                    <td align="left" style="min-width:235px;">MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">TÊN MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</td>
-                                    <td class="item-cn">
-                                        <div class="cn-edit">
-                                           
-                                           <span class="mi-delete-table" >
-                                           
-                                           </span>
-                                       </div>
-                                    </td>                    
-                                </tr>
-                                <tr>   
-                                    <td align="center" class="thead1" style="min-width:20px">
-                                        1
-                                    </td>
-                                    <td align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</td>
-                                    <td align="left" style="min-width:180px">TK NỢ</td>
-                                    <td align="left" style="min-width:60px">TK CÓ</td>
-                                    <td align="right" style="min-width:100px">SỐ TIỀN</td>
-                                    <td align="left" style="min-width:115px">ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:120px">TK NGÂN HÀNG</td>
-                                    <td align="left" style="min-width:156px">KHẾ ƯỚC VAY</td>
-                                    <td align="left" style="min-width:235px;">KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN MUA HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG MUA</td>
-                                    <td align="left" style="min-width:235px;">MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">TÊN MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</td>
-                                    <td class="item-cn">
-                                        <div class="cn-edit">
-                                           
-                                           <span class="mi-delete-table" >
-                                           
-                                           </span>
-                                       </div>
-                                    </td>                    
-                                </tr>
-                                <tr>   
-                                    <td align="center" class="thead1" style="min-width:20px">
-                                        1
-                                    </td>
-                                    <td align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</td>
-                                    <td align="left" style="min-width:180px">TK NỢ</td>
-                                    <td align="left" style="min-width:60px">TK CÓ</td>
-                                    <td align="right" style="min-width:100px">SỐ TIỀN</td>
-                                    <td align="left" style="min-width:115px">ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:120px">TK NGÂN HÀNG</td>
-                                    <td align="left" style="min-width:156px">KHẾ ƯỚC VAY</td>
-                                    <td align="left" style="min-width:235px;">KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN MUA HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG MUA</td>
-                                    <td align="left" style="min-width:235px;">MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">TÊN MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</td>
-                                    <td class="item-cn">
-                                        <div class="cn-edit">
-                                           
-                                           <span class="mi-delete-table" >
-                                           
-                                           </span>
-                                       </div>
-                                    </td>                    
-                                </tr>
-                                <tr>   
-                                    <td align="center" class="thead1" style="min-width:20px">
-                                        1
-                                    </td>
-                                    <td align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</td>
-                                    <td align="left" style="min-width:180px">TK NỢ</td>
-                                    <td align="left" style="min-width:60px">TK CÓ</td>
-                                    <td align="right" style="min-width:100px">SỐ TIỀN</td>
-                                    <td align="left" style="min-width:115px">ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:120px">TK NGÂN HÀNG</td>
-                                    <td align="left" style="min-width:156px">KHẾ ƯỚC VAY</td>
-                                    <td align="left" style="min-width:235px;">KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN MUA HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG MUA</td>
-                                    <td align="left" style="min-width:235px;">MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">TÊN MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</td>
-                                    <td class="item-cn">
-                                        <div class="cn-edit">
-                                           
-                                           <span class="mi-delete-table" >
-                                           
-                                           </span>
-                                       </div>
-                                    </td>                    
-                                </tr>
-                                <tr>   
-                                    <td align="center" class="thead1" style="min-width:20px">
-                                        1
-                                    </td>
-                                    <td align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</td>
-                                    <td align="left" style="min-width:180px">TK NỢ</td>
-                                    <td align="left" style="min-width:60px">TK CÓ</td>
-                                    <td align="right" style="min-width:100px">SỐ TIỀN</td>
-                                    <td align="left" style="min-width:115px">ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:120px">TK NGÂN HÀNG</td>
-                                    <td align="left" style="min-width:156px">KHẾ ƯỚC VAY</td>
-                                    <td align="left" style="min-width:235px;">KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN MUA HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG MUA</td>
-                                    <td align="left" style="min-width:235px;">MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">TÊN MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</td>
-                                    <td class="item-cn">
-                                        <div class="cn-edit">
-                                           
-                                           <span class="mi-delete-table" >
-                                           
-                                           </span>
-                                       </div>
-                                    </td>                    
-                                </tr>
-                                <tr>   
-                                    <td align="center" class="thead1" style="min-width:20px">
-                                        1
-                                    </td>
-                                    <td align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</td>
-                                    <td align="left" style="min-width:180px">TK NỢ</td>
-                                    <td align="left" style="min-width:60px">TK CÓ</td>
-                                    <td align="right" style="min-width:100px">SỐ TIỀN</td>
-                                    <td align="left" style="min-width:115px">ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:120px">TK NGÂN HÀNG</td>
-                                    <td align="left" style="min-width:156px">KHẾ ƯỚC VAY</td>
-                                    <td align="left" style="min-width:235px;">KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN MUA HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG MUA</td>
-                                    <td align="left" style="min-width:235px;">MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">TÊN MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</td>
-                                    <td class="item-cn">
-                                        <div class="cn-edit">
-                                           
-                                           <span class="mi-delete-table" >
-                                           
-                                           </span>
-                                       </div>
-                                    </td>                    
-                                </tr>
-                                <tr>   
-                                    <td align="center" class="thead1" style="min-width:20px">
-                                        1
-                                    </td>
-                                    <td align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</td>
-                                    <td align="left" style="min-width:180px">TK NỢ</td>
-                                    <td align="left" style="min-width:60px">TK CÓ</td>
-                                    <td align="right" style="min-width:100px">SỐ TIỀN</td>
-                                    <td align="left" style="min-width:115px">ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:120px">TK NGÂN HÀNG</td>
-                                    <td align="left" style="min-width:156px">KHẾ ƯỚC VAY</td>
-                                    <td align="left" style="min-width:235px;">KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN MUA HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG MUA</td>
-                                    <td align="left" style="min-width:235px;">MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">TÊN MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</td>
-                                    <td class="item-cn">
-                                        <div class="cn-edit">
-                                           
-                                           <span class="mi-delete-table" >
-                                           
-                                           </span>
-                                       </div>
-                                    </td>                    
-                                </tr>
-                                <tr>   
-                                    <td align="center" class="thead1" style="min-width:20px">
-                                        1
-                                    </td>
-                                    <td align="left" class="thead2" style="min-width:120px">DIỄN GIẢI</td>
-                                    <td align="left" style="min-width:180px">TK NỢ</td>
-                                    <td align="left" style="min-width:60px">TK CÓ</td>
-                                    <td align="right" style="min-width:100px">SỐ TIỀN</td>
-                                    <td align="left" style="min-width:115px">ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:134px">TÊN ĐỐI TƯỢNG</td>
-                                    <td align="left" style="min-width:120px">TK NGÂN HÀNG</td>
-                                    <td align="left" style="min-width:156px">KHẾ ƯỚC VAY</td>
-                                    <td align="left" style="min-width:235px;">KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">TÊN KHOẢN MỤC CP</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐƠN VỊ</td>
-                                    <td align="left" style="min-width:235px;">ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">TÊN ĐỐI TƯỢNG THCP</td>
-                                    <td align="left" style="min-width:235px;">CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">TÊN CÔNG TRÌNH</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN ĐẶT HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG BÁN</td>
-                                    <td align="left" style="min-width:235px;">ĐƠN MUA HÀNG</td>
-                                    <td align="left" style="min-width:235px;">HỢP ĐỒNG MUA</td>
-                                    <td align="left" style="min-width:235px;">MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">TÊN MỤC THU/CHI</td>
-                                    <td align="left" style="min-width:235px;">MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">TÊN MÃ THỐNG KÊ</td>
-                                    <td align="left" style="min-width:235px;">CP KHÔNG HỢP LÝ</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 1</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 2</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 3</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 4</td>
-                                    <td align="left" style="min-width:235px;">TRƯỜNG MỞ RỘNG 5</td>
-                                    <td class="item-cn">
-                                        <div class="cn-edit">
-                                           
-                                           <span class="mi-delete-table" >
-                                           
-                                           </span>
-                                       </div>
-                                    </td>                    
-                                </tr>
-                            </tbody>
-                            
-                        </table>
+                        <ms-grid-editable
+                        ref="gridPaymentDetail"
+                        :isCheckable="false"
+                        :isCount="true"
+                        :showFooter="true"
+                        :listHeader="listHeader"
+                        :listData="payment_detail_list"
+                        :disabled="this.id == 'edit-form' ? true : false"
+                        @eAddRow="addRow"
+                        @eRemoveRow="removeRow"
+                        @eRemoveAllRow="handleRemoveAllRow"
+                        @eNumberInput="handleNumberInput"
+                        @eComboSelected="handleComboSelected"
+                    />
+                       
                     </div>
                 </div>
                 <div class="main-child">
                     <div class="ms-child">
-                        <button class="btn-addRow btn-btn" tabindex="13">Thêm dòng</button>
-                        <button class="btn-deleteRow btn-btn" tabindex="14">Xóa hết dòng</button>
+                        <button class="btn-addRow btn-btn" tabindex="13" @click="addRow">Thêm dòng</button>
+                        <button class="btn-deleteRow btn-btn" id="deleteAllRows" tabindex="14" @click="onDelleteAllRows">Xóa hết dòng</button>
                     </div>
                     <div class="ms-child-2">
                         <div class="merge-child">
@@ -569,31 +279,60 @@
                 </div>
             </div>
         </div>
+        <ms-dialog-setting
+        ref="settingDialog"
+        :isRight="true"
+        @eUpdateColumn="updateColumn"
+        :listData="listColumnConfig"
+        />
+        <ms-dialog
+             ref="mMessage"
+             v-show="isDialog"
+            dialogName="deleteAllRows"
+            @eConfirmDelete="removeAllRow"
+            @closeDialog="this.isDialog = false"
+        />
 </div>
 </template>
 <script>
 // import TheInputVue from "./TheInput.vue";
 // import CompTabs from './CompTabs.vue';
 // import TheButton from "../../components/TheButton.vue";
-import TheDropdown from "../../components/TheDropdown.vue";
+import msGridEditable from "@/components/base/grid/ms-gridEditTable.vue";
+import msDialogSetting from '@/components/base/dialog/ms-dialogSetting.vue'
+import { locale, loadMessages } from "devextreme/localization";
+import deMessages from "devextreme/localization/messages/de.json";
+import msCombobox from "@/components/base/combobox/ms-combobox.vue";
+// import msDropdown from "../../components/base/ms-dropdown.vue";
+import msDropdownInfo from "@/components/base/ms-dropdownInfo.vue";
 // import TheRadio from "../../components/TheRadio.vue";
-// import TheDialog from '../../components/TheDialog.vue'
+import msDialog from '@/components/base/dialog/ms-dialog.vue'
 import Resource from "@/Resource/Resource";
 import keyCode from "@/enum/keyCode";
+import msInput from "@/components/base/input/ms-input.vue"
 // import TheInput from "@/components/TheInput.vue";
 import {RepositoryFactory} from '@/Repository/RepositoryFactory';
  const EmployeeRepository = RepositoryFactory.get('Employees');
 //  const DepartmentRepository = RepositoryFactory.get('Departments');
-import DepartmentRepository from "@/Repository/DepartmentRepository";
 
-
+import DxDateBox from 'devextreme-vue/date-box';
+import {
+formatCurrencyToSave,
+  compareDate,
+  formatNumber
+  
+} from "@/js/base";
+// import Enum from "@/js/enum";
 export default {
     name: "ReceiptDetail",
     components: {
-        
-        TheDropdown,
-        
-        
+        msCombobox,
+        msDropdownInfo,
+        DxDateBox,
+        msInput,
+        msGridEditable,
+        msDialogSetting,
+        msDialog
     },
     props: {
         id: String,
@@ -601,31 +340,223 @@ export default {
         employeeID: String,
         
     },
+    created() {
+        loadMessages(deMessages);
+        locale(navigator.language);
+    },
     beforeMount() {
         // Xử lý UI form thêm hoặc sửa trước khi mở form
         this.handleUI();
         // Xử lý Lấy mã nhân viên mới
-        this.getNewEmployeeCode();
+        // this.getNewEmployeeCode();
         // Lấy danh sách phòng ban đưa lên UI
-        this.getDepartment();
+        // this.getDepartment();
         // Lấy dữ liệu nhân viên đưa vào trong form
         this.userInfo(this.employeeCode);
     },
     // Tự động focus mã nhân viên khi form mở
     mounted() {
         // this.$refs.inputFocus?.focus();
-        
+        this.payment.currency_id = this.typeMoney[0].value;
         this.employeeOld = structuredClone(this.employee);
+        this.payment.journal_memo = "Chi tiền cho";
+        this.payment.posted_date = this.formatDate();
+        this.payment.ref_date = this.formatDate();
     },
     
     methods: {
+         /**------------------------------------------
+    *Xử lý khi ngày hạch toán được chọn
+    *Author: quyetkaito (25/04/2022)
+    --------------------------------------------*/
+    onPostedDatePicked(event) {
+      // console.log("ngày đang chọn", event);
+      // console.log("ngày hạch toán hiện tại:", this.payment.posted_date);
+      // console.log("ngày chứng từ hiện tại:", this.payment.ref_date);
+      if (
+        this.id == "add-form" ||
+        this.id == "nhanban-form"
+      ) {
+        //nếu khi thêm mới mà ngày hạch toán bằng ngày chứng từ=> thay đổi theo
+        if (compareDate(this.payment.ref_date, this.payment.posted_date) == 0) {
+          //gán ngày chứng từ bằng ngày hạch toán(nếu là thêm mới)
+          this.payment.ref_date = event;
+          this.payment.posted_date = event;
+        } else {
+          this.payment.posted_date = event;
+        }
+      }
+    },
+     /**------------------------------------------
+    *Loại bỏ css lỗi cho, bắt sự kiện khi ngày tháng (thay đổi)
+    *Author: quyetkaito (23/04/2022)
+    --------------------------------------------*/
+    onPostedDateChanged() {
+      //bỏ css lỗi khi validate
+      this.$refs.posted_date.children[0].children[0].classList.remove(
+        "error"
+      );
+    },
+    /**------------------------------------------
+    *Hàm bind lý do chi + ten đối tượng
+    *@param {String} value: tên đối tượng
+    *Author: quyetkaito (21/04/2022)
+    --------------------------------------------*/
+    bindDescription(value) {
+      this.payment.journal_memo = `Chi tiền cho ${value}`;
+      if (this.payment_detail_list.length > 0) {
+        this.payment_detail_list[0].description = `Chi tiền cho ${value}`;
+      }
+    },
+  /**------------------------------------------
+    * Xử lý khi lý cho chi nhập vào.
+    *Author: quyetkaito (25/04/2022)
+    --------------------------------------------*/
+    onMasterReasonInput(value) {
+      //thay đổi lý do chi detail theo
+      if (this.payment_detail_list.length > 0) {
+        for (let i = 0; i < this.payment_detail_list.length; i++) {
+          this.payment_detail_list[i].description = `${value}`;
+        }
+      }
+    },
+     /**------------------------------------------
+    *Nhận value từ ô input số của table.
+    *@param {String} value: giá trị của số nhận được từ table.
+    *@param {String} fieldName: tên cột của ô input number đó
+    *Author: quyetkaito (17/04/2022)
+    --------------------------------------------*/
+    handleNumberInput({ fieldName }) {
+      // console.log("nhan dc", value);
+      // console.log("fieldName", fieldName);
+
+      //tạo vòng for tính tổng
+      let total = 0;
+      for (let i = 0; i < this.payment_detail_list.length; i++) {
+        total =
+          total + formatCurrencyToSave(this.payment_detail_list[i][fieldName]);
+      }
+
+      //total bên ngoài => chuyển thành text
+      this.payment.total_amount = formatNumber(total.toString());
+      if (this.payment.total_amount == 0) {
+        //format nếu số = 0.
+        this.payment.total_amount = "0,0";
+      }
+
+      //(total trong bảng) tìm trong header để bind data đúng cột đó thôi
+      for (let i = 0; i < this.listHeader.length; i++) {
+        if (this.listHeader[i].fieldName == fieldName) {
+          // console.log("đang tính toán cột: ", fieldName);
+          this.listHeader[i].total_amount = this.payment.total_amount;
+        }
+      }
+    },
+    /**-----------------------------------
+     * Thêm hàng mới trong bảng hạch toán
+     * Author: quyetkaito (03/04/2022)
+     -------------------------------------*/
+     async addRow() {
+      //số phiếu chi detail hiện tại.
+      let detail_length = this.payment_detail_list.length;
+      //thêm hàng mới
+      if (detail_length == 0) {
+        await this.payment_detail_list.push({});
+      } else {
+        await this.payment_detail_list.push({
+          description: this.payment_detail_list[detail_length - 1].description,
+          amount: "0,0",
+          account_object_id: this.payment_detail_list[detail_length - 1]
+            ? this.payment_detail_list[detail_length - 1].account_object_id
+            : "",
+          account_object_name: this.payment_detail_list[detail_length - 1]
+            ? this.payment_detail_list[detail_length - 1].account_object_name
+            : "",
+        });
+      }
+
+      //focus vào ô đầu tiên trong hảng
+      this.$refs.gridPaymentDetail.focus(this.payment_detail_list.length);
+    },
+    /**------------------------------------------------
+     * Hàm thực hiện xóa một hàng trong list hạch toán
+     * @param {Number} index: xác định hàng đang xóa.
+     * @author: quyetkaito (31/03/2022)
+     -------------------------------------------------*/
+     removeRow(index) {
+      //xóa dòng đó khỏi mảng
+      this.payment_detail_list.splice(index, 1);
+      //tính lại tổng tiển
+      this.calculateTotal();
+    },
+     /**------------------------------------------
+    *Hàm tính cột tổng tiền của detail.
+    *Author: quyetkaito (23/04/2022)
+    --------------------------------------------*/
+    calculateTotal() {
+      try {
+        //tính lại tổng tiền
+        let total = 0;
+        for (let i = 0; i < this.payment_detail_list.length; i++) {
+          total =
+            total + formatCurrencyToSave(this.payment_detail_list[i]["amount"]);
+        }
+
+        //total bên ngoài => chuyển thành text
+        this.payment.total_amount = formatNumber(total.toString());
+        if (this.payment.total_amount == 0) {
+          //format nếu số = 0.
+          this.payment.total_amount = "0,0";
+        }
+
+        //(total trong bảng) tìm trong header để bind data đúng cột tổng tiền
+        for (let i = 0; i < this.listHeader.length; i++) {
+          if (this.listHeader[i].fieldName == "amount") {
+            this.listHeader[i].total_amount = this.payment.total_amount;
+          }
+        }
+      } catch (error) {
+        //log ra lỗi
+        console.log(error);
+      }
+    },
+
+     /**------------------------------------------
+     * Hàm xử lý khi nút xóa hết dòng được chọn.
+     * Author: quyetkaito (31/03/2022)
+     -----------------------------------------*/
+     handleRemoveAllRow() {
+      //cảnh báo xóa dữ liệu nếu đang có data
+      this.isError = !this.isError;
+      this.errorMgs = Resource.ERROR.deleteAllRows;
+    //   this.dialogName = "deleteAllRows";
+    },
+     /**----------------------------------------------------
+     * Hàm thực hiện xóa hết hàng của bảng hạch toán
+     * Author: quyetkaio (03/04/2022)
+     ------------------------------------------------------*/
+     removeAllRow() {
+        this.isDialog = false;
+      //clear list
+      this.payment_detail_list = [];
+      //push một đối tượng mới
+      this.payment_detail_list.push(
+        {description:this.payment.journal_memo,debit_account:"231",credit_account:"150",amount:"0,0",account_object_id:"1235112",account_object_name:"Nguyễn mạnh hùng"}
+      );
+    },
+    onDelleteAllRows(){
+        this.isDialog = !this.isDialog;
+        this.isDropdown = false;
+        this.featureDropdown = null;
+        this.showDelete = null;
+    },
         /**
          * Xử lý tab order
          * Author : Đinh Công Trứ (2/11/2022)
          */
-        // tabOrder() {
-        //     this.$refs.inputFocus.focus();
-        // },
+        tabOrder() {
+            this.$refs.input.$refs.input.focus();
+        },
         /**
          * Xử lý tabcomponents
          * Author : Đinh Công Trứ (2/11/2022)
@@ -726,26 +657,7 @@ export default {
                 this.titleButton = Resource.BUTTON.CATNHAN;
             }
         },
-        /**
-         * Thực hiện lấy dữ giới tính
-         **  Author: Đinh Công Trứ(2/11/2022)
-         */
-        getGender(event) {
-            this.employee.gender = event;
-        },
-        /**
-         * Thực hiện lấy dữ liệu đơn vị gồm id và tên
-         **  Author: Đinh Công Trứ(2/11/2022)
-         */
-         getDepartmentId(event) {
-            this.employee.departmentID = event;
-    
-        },
-        getDepartmentName(event) {
-            this.employee.departmentName = event;
-            
-            
-        },
+        
         /**
          * Thực hiện xử lý validate dữ liệu mã nhân viên
          **  Author: Đinh Công Trứ(2/11/2022)
@@ -772,101 +684,92 @@ export default {
                 }
             }
         },
+        validatePaymentCode(code){
+                if (!code) {
+                this.error.ca_payment_code = false;
+            } else {
+                this.error.ca_payment_code = true;
+            }
+            
+        },
         /**
          * Thực hiện validate dữ liệu khi ấn lưu
          **  Author: Đinh Công Trứ(2/11/2022)
          */
         validateForm() {
-            if (!this.employee.employeeCode) {
-                this.error.employeeCode = "form-input-error";
-               
-            } else {
-                this.error.employeeCode = "";
-            }
-            if (!this.employee.employeeName) {
-                this.error.employeeName = "form-input-error";
+        let valid = true;
+      this.listError = [];
+      //validate master
+      //1. số phiếu chi không được bỏ trống
+      if (!this.payment.ca_payment_code) {
+                this.error.ca_payment_code = "form-input-error";
                 this.isError = !this.isError;
-                this.errorMgs = Resource.ERROR.employeeNameError;
-               return false;
-               
-            } else {
-                this.error.employeeName = "";
-            }
-            if (!this.employee.departmentName) {
-                this.error.departmentName = "form-input-error";
+                this.errorMgs = Resource.ERROR.errorChi;      
+        valid = false;
+      }
+      //2.ngày hạch toán phải lớn hơn hoặc bằng ngày chứng từ
+      if (compareDate(this.payment.posted_date, this.payment.ref_date) == -1) {
+        // console.log("ngay hach toan hien tai", this.payment.posted_date);
+        // console.log("ngay pc hien tai", this.payment.ref_date);
+                 this.error.posted_date = "form-input-error";
                 this.isError = !this.isError;
-                this.errorMgs = Resource.ERROR.departmentError;
-               return false;
-            }
-
-            return true;
-        },
+                this.errorMgs = Resource.ERROR.post_date;   
+        valid = false;
+      }
+      //validate detail
+      //1.tài khoản nợ không được phép bỏ trống
+      this.payment_detail_list.forEach((element, index) => {
+        if (!element.debit_account) {
+          let refName = "debit_account" + index;
+          this.$refs.gridPaymentDetail.addError(refName);
+          this.error.debit_account = "form-input-error";
+                this.isError = !this.isError;
+                this.errorMgs = Resource.ERROR.debit_account;   
+          valid = false;
+        }
+        //gửi event css lỗi cho grid.
+      });
+      //todo
+      //thêm toàn bộ css cảnh báo lỗi cho ô input
+      for (let i = 0; i < this.listError.length; i++) {
+        if (
+          this.listError[i].id != "posted_date" &&
+          this.listError[i].id != "ref_date"
+        ) {
+          if (this.$refs[this.listError[i].id]) {
+            this.$refs[this.listError[i].id].addError();
+          }
+        }
+        if (
+          this.listError[i].id == "posted_date" ||
+          this.listError[i].id == "ref_date"
+        ) {
+          this.$refs[
+            this.listError[i].id
+          ].children[0].children[0].classList.add("error");
+        }
+      }
+      return valid;
+     },
         /**
-         * Thực hiện format date từ api trả về
+         * Thực hiện format date ngày hiện tại
          **  Author: Đinh Công Trứ(2/11/2022)
          */
-        formatDate(date) {
-            if (date) {
-                var d = new Date(date),
-                    month = "" + (d.getMonth() + 1),
-                    day = "" + d.getDate(),
-                    year = d.getFullYear();
+        formatDate() {
+          
+                var today = new Date(),
+                    month = "" + (today.getMonth() + 1),
+                    day = "" + today.getDate(),
+                    year = today.getFullYear();
 
                 if (month.length < 2) month = "0" + month;
                 if (day.length < 2) day = "0" + day;
 
                 return [year, month, day].join("-");
-            } else {
-                return null;
-            }
+           
         },
-        /**
-         * Thực hiện lấy mã nhân viên mới nhất
-         **  Author: Đinh Công Trứ(2/11/2022)
-         */
-        getNewEmployeeCode() {
-            if (this.id == "add-form" || this.id == "nhanban-form" || this.id =="add-vendor") {
-                const me = this;
-                try{
-                    EmployeeRepository.getNewEmployeeCode()
-                    .then((response) => {                    
-                        this.employee.employeeCode = response.data.EmployeeCode;  
-                        this.employeeOld.employeeCode = response.data.EmployeeCode;                        
-                    })
-                    .catch((error) => {
-                        if(error.response.status == 500){
-                            me.isError = !me.isError;
-                            me.errorMgs = Resource.ERROR.loadDataError;
-                        }else {
-                            me.isError = !me.isError;
-                            me.errorMgs = error.response.data.userMsg;
-                        }
-                    });
-                } catch (error){
-                    console.log(error);
-                }
-             }
-        },
-        /**
-         * Thực hiện lấy Danh sách đơn vị
-         **  Author: Đinh Công Trứ(2/11/2022)
-         */
-        getDepartment() {
-            const me = this;
-            DepartmentRepository.getAllDepartments()
-            .then((res) => {
-                    this.departmentList = res.data;
-                })
-                .catch((error) => {
-                    if(error.response.status == 500){
-                            me.isError = !me.isError;
-                            me.errorMgs = Resource.ERROR.filterDataError;
-                        }else {
-                            me.isError = !me.isError;
-                            me.errorMgs = error.response.data.userMsg;
-                        }
-                });
-        },
+        
+       
         /**
          * Thực hiện lấy dữ liệu nhân viên đưa ra form
          **  Author: Đinh Công Trứ(2/11/2022)
@@ -1179,33 +1082,42 @@ export default {
             }
 
         },
+        /**
+         * Thực hiện xử lý sự kiện mở tùy chỉnh giao diện
+         * Author: Đinh Công Trứ(25/11/2022)  
+         */
+        openSettingDialog(){
+            //show setting dialog
+        this.$refs.settingDialog.show();
+        },
     },
     data() {
         return {
             keyCode : keyCode,
             Resource :Resource,
-            employeeOld: {},
-            posts: [],
+            paymentOld: {},
+            error: {
+                ca_payment_code:true,
+                posted_date:true,
+                debit_account:true,
+            },
             isWarring: false,
             isDialog: false,
-            error: {
-                employeeCode: true,
-                employeeName: true,
-                departmentName: true,
-            },
-            refName: "inputFocus",
-            employee: {},
+            payment: {},
             idButton: "",
             titleButton: "",
             title: "",
             errorMgs: false,
             isError: false,
             departmentList: {},
+            dateFormat:"DD/MM/yyyy",
             radioData:{
                 Male: "Nam",
                 Female: "Nữ",
                 Orther: "Khác"
             },
+            resion:"Chi tiền cho",
+            defaultSPC:"pc161",
             radio:{
                 Group: "Tổ chức",
                 Sigle: "Cá nhân",
@@ -1218,7 +1130,185 @@ export default {
                 { name : "Địa chỉ khác"},
                 { name : "Ghi chú"},
             ],
+            typeMoney:[
+                 {label:"Việt nam đồng",value:"VND",code:"VND"},
+                 {label:"Đô la Mỹ",value:"USA",code:"USA"},
+                // {label:"",value:"",code:"Điều Khoản 1"},
+                // {label:"Điều Khoản 2",value:"Điều Khoản 2",code:"DK2"},
+                // {label:"Điều Khoản 3",value:"Điều Khoản 3",code:"DK3"},
+                // {label:"Điều Khoản 4",value:"Điều Khoản 4",code:"DK4"},
+                
+            ],
+            headerTypeMoney:[
+                { fieldName: 'code', text: 'Số tài khoản', columnWidth: 130,},
+                { fieldName: 'label', text: 'Tên tài khoản', columnWidth: 130,},
+            ],
+            moneyDefault:"",
+            optionReceipt:[
+                
+                { name : "1. Chi khác"},
+            ],
+           
+            //option danh sách mã đối tượng
+            listObject:[
+                {label:"CÔNG TY TNHH MBS COLLECTIVE",value:"1235112",code:"1235112",tax_code:"mbs",address:"Số 35 Đặng Thai Mai, Thành phố Hà Nội, Việt Nam",phone_number:"0235823958"},
+                {label:"CÔNG TY CỔ PHẦN MISA",value:"1221342",code:"1221342",tax_code:"mbs",address:"Số 35 Đặng Thai Mai, Thành phố Hà Nội, Việt Nam",phone_number:"0235823958"},
+                {label:"CÔNG TY TNHH THEANH28",value:"1213112",code:"1213112",tax_code:"mbs",address:"Số 35 Đặng Thai Mai, Thành phố Hà Nội, Việt Nam",phone_number:"0235823958"},
+                {label:"CÔNG TY TNHH ABC",value:"12312",code:"12312",tax_code:"mbs",address:"Số 35 Đặng Thai Mai, Thành phố Hà Nội, Việt Nam",phone_number:"0235823958"},
+               
+            ],
+            listEmployeeOptions:[
+                 {label:"Nguyễn mạnh hùng",value:"Nguyễn mạnh hùng",code:"NV001",department:"phòng nhân sự",phone_number:"0235823958"},
+                {label:"Nguyễn quang thắng",value:"Nguyễn quang thắng",code:"NV002",department:"phòng hành chính",phone_number:"0235823958"},
+                {label:"Nguyễn thị hạnh",value:"Nguyễn thị hạnh",code:"NV003",department:"phòng kế toán",phone_number:"0235823958"},
+                {label:"Nguyễn quỳnh anh",value:"Nguyễn quỳnh anh",code:"NV004",department:"phòfng giám đốc",phone_number:"0235823958"},
+            ],
+            headerEmployee:[
+            {
+                text: "Mã nhân viên",
+                fieldName: "code",
+                columnWidth: 100,
+                },
+                {
+                text: "Tên nhân viên",
+                fieldName: "label",
+                columnWidth: 150,
+                },
+                {
+                text: "Đơn vị",
+                fieldName: "department",
+                columnWidth: 130,
+                },
+                {
+                text: "ĐT di động",
+                fieldName: "phone_number",
+                columnWidth: 100,
+                },
+            ],
+            headerObjectCode:[
+            {
+                text: "Đối tượng",
+                fieldName: "code",
+                columnWidth: 150,
+                },
+                {
+                text: "Tên đối tượng",
+                fieldName: "label",
+                columnWidth: 231,
+                },
+                {
+                text: "Mã số thuế",
+                fieldName: "taxCode",
+                columnWidth: 150,
+                },
+                {
+                text: "Địa chỉ",
+                fieldName: "address",
+                columnWidth: 250,
+                },
+                {
+                text: "Điện thoại",
+                fieldName: "phoneNumber",
+                columnWidth: 150,
+                },
+            ],
+            optionDefault:["1. Chi khác"],
             tabActive : 0,
+             //table trong form chi tiết
+             payment_detail_list: [
+                {description:"chi tiền cho",debit_account:"231",credit_account:"150",amount:"0,0",account_object_id:"1235112",account_object_name:"Nguyễn mạnh hùng"},
+              
+            ],
+            listHeader:[{
+                text: "DIỄN GIẢI",
+                fieldName: "description",
+                type:"input",
+                columnWidth: 220,
+                style:"inputGrid"
+                },
+                {
+                text: "TK NỢ",
+                fieldName: "debit_account",
+                type:"selectbox",
+                comboHeader:[
+                    { fieldName: 'code', text: 'Số tài khoản', columnWidth: 130,},
+                    { fieldName: 'label', text: 'Tên tài khoản', columnWidth: 130,},
+                ],
+                id :"ids1",
+                comboOption:[
+                    {label:"Việt nam đồng",value:"VND",code:"VND"},
+                    {label:"Đô la Mỹ",value:"USA",code:"USA"},
+                ],
+                columnWidth: 173,
+                },
+                {
+                text: "TK CÓ",
+                fieldName: "credit_account",
+                type:"selectbox",
+                id:"ids2",
+                comboHeader:[
+                    { fieldName: 'code', text: 'Số tài khoản', columnWidth: 130,},
+                    { fieldName: 'label', text: 'Tên tài khoản', columnWidth: 130,},
+                ],
+                comboOption:[
+                    {label:"Việt nam đồng",value:"VND",code:"VND"},
+                    {label:"Đô la Mỹ",value:"USA",code:"USA"},
+                   
+                ],
+                columnWidth: 142,
+                },
+                {
+                text: "SỐ TIỀN",
+                fieldName: "amount",
+                type:"input-number",
+                columnWidth: 164,
+                },
+                {
+                text: "ĐỐI TƯỢNG",
+                fieldName: "account_object_id",
+                type:"selectbox",
+                columnWidth: 151,
+                },
+                {
+                text: "TÊN ĐỐI TƯỢNG",
+                fieldName: "account_object_name",
+                columnWidth: 630,
+                },
+                {
+                text: "TK NGÂN HÀNG",
+                fieldName: "phoneNumber",
+                type:"selectbox",
+                columnWidth: 200,
+                },
+                {
+                text: "KHẾ ƯỚC VAY",
+                fieldName: "phoneNumber",
+                type:"selectbox",
+                columnWidth: 150,
+                },
+                {
+                text: "KHOẢN MỤC CP",
+                fieldName: "phoneNumber",
+                type:"selectbox",
+                columnWidth: 151,
+                },
+                {
+                text: "TÊN KHOẢN MỤC CP",
+                fieldName: "phoneNumber",
+                columnWidth: 250,
+                },
+                {
+                text: "ĐƠN VỊ",
+                fieldName: "phoneNumber",
+                type:"selectbox",
+                columnWidth: 150,
+                },
+                {
+                text: "TÊN ĐƠN VỊ",
+                fieldName: "phoneNumber",
+                columnWidth: 150,
+                },
+            ],
         };
     },
 };
@@ -1228,7 +1318,10 @@ export default {
 #width334{
     width: 334px !important;
 }
-#w100{
+.inputGrid{
+    width: calc(100% - 16px);
+}
+.w100{
     width: 100px !important;
 }
 .white{
@@ -1246,14 +1339,63 @@ export default {
     border: 1px solid #8d9096 !important;
 }
 .sochi{
-    width: calc(60% + 2px);
+    width: 189px;
     height: 28px;
     padding-left: 12px;
+    font-family: "Helvetica Neue","Segoe UI",helvetica,verdana,sans-serif;
+    line-height: 14.35715;
 }
 .btn-btn:focus{
-    border: 3px solid #dcdcdc !important;
+    border: 1px solid #dcdcdc !important;
 }
 button.btn-btn {
     outline: none;
+}
+.dx-texteditor-input{
+    min-height: 32px;
+}
+.dx-datebox {
+    /* max-width: 60%; */
+    height: 32px;
+    max-width: 205px !important;
+}
+.dx-texteditor-input{
+    padding:3px 12px 8px !important;
+    border: none !important;
+}
+.dx-calendar-cell.dx-calendar-selected-date.dx-calendar-contoured-date{
+    border-radius: 50%;
+    background-color: rgba(44,160,28,.2);
+    color: #08bf1e !important;
+    font-weight: 600;
+    width: 36px;
+    height: 34px;
+    box-shadow:none !important;
+}
+.dx-calendar-cell.dx-state-hover{
+    cursor: pointer;
+    border: 1px solid #2ca01c;
+    transition: .1s ease-in-out;
+    /* box-shadow: none !important; */
+    border-radius: 50%;
+}
+/* .dx-calendar-body td{
+    border: 1px solid #2ca01c !important;
+} */
+.labelPayment{
+    width: 61px;
+    margin: 0;
+}
+.right20{
+    right: -20px;
+}
+.revMargin{
+    margin-top: 0 !important;
+}
+table .table thead tr th{
+    border:none !important;
+}
+table .table tbody tr td{
+    border:none !important;
 }
 </style>

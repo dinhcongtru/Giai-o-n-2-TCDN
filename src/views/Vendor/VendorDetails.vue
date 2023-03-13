@@ -31,97 +31,155 @@
                     <div class="content-pog-t">
                         <div class="cont-l" >
                                 <div class="info-ma">
-                                    <div class="colum-ma">
-                                        <div class="ma">Mã số thuế
-                                            <!-- <span style="color: red;">*</span> -->
-                                        </div>
-                                        <ms-input ref="input" type="text" :style="'inp-ma'"  :id="'txtEmployeeCode'"  tabindex="1" :autoFocus="true" v-model="employee.telephoneNumber" autocomplete="off"/>
-                                        
-                                    </div>
-                                    <div class="colum-name">
-                                            <div class="name">Mã nhà cung cấp
-                                                <span style="color: red;">*</span>
-                                            </div>
-                                            <ms-input type="text" :style="'inp-name'"  v-model="employee.employeeCode"  tabindex="2"  required :error="error.employeeCode" :blur="validateEmployeeCode(employee.employeeCode)" autocomplete="off"/>
-                                        
-                                    </div>
+                                    <ms-input  
+                                        class="colum-ma"
+                                        labelText="Mã số thuế"
+                                        ref="input"
+                                        styleClass="inp-ma"
+                                        id="txtVendorCode"
+                                        tabInput="1"
+                                        v-model="vendor.taxCode"
+                                        autocomplete="off"  
+                                        :maxlength="20"
+                                    />  
+                                    <ms-input 
+                                        class="colum-name"
+                                        labelText="Mã nhà cung cấp"
+                                        :isRequire="true"
+                                        styleClass="inp-name"
+                                        v-model="vendor.vendorCode"
+                                        tabInput="2"
+                                        :error="error.vendorCode" 
+                                        :blur="validateVendorCode(vendor.vendorCode)" 
+                                        autocomplete="off"
+                                        :maxlength="20"
+                                    />
                                 </div>
                                 <div class="chucvu">
-                                    <div class="colum-cv">
-                                        <div class="name-cv">Tên nhà cung cấp
-                                            <span style="color: red;">*</span>
-                                        </div>
-                                        <ms-input type="text" class="inp-ma chucdanh"  name="input"  tabindex="3" id="txtChucDanh" v-model="employee.employeeName" required :error="error.employeeName" :blur="validateEmployeeName(employee.employeeName)" autocomplete="off"/>
-                                    </div>
+                                    <ms-input 
+                                        class="colum-cv"
+                                        labelText="Tên nhà cung cấp"
+                                        :isRequire="true"
+                                        styleClass="inp-ma chucdanh"
+                                        tabInput="3"
+                                        id="txtChucDanh" 
+                                        v-model="vendor.vendorName"
+                                        :error="error.vendorName" 
+                                        :blur="validateVendorName(vendor.vendorName)" 
+                                        autocomplete="off"
+                                        :maxlength="255"
+                                    />
                                 </div> 
-                                <div class="info-donvi">
-                                    <div class="name-dv">
-                                        <div class="font700">Địa chỉ</div>
-                                    </div>
-                                   <input type="text" placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội" class="inp-ma chucdanh padding20" tabindex="4" v-model="employee.addRess" autocomplete="off">
-                                </div>      
+                                <ms-input
+                                    class="info-donvi"
+                                    labelText="Địa chỉ"
+                                    styleClass="inp-ma chucdanh padding20"
+                                    tabInput="4" 
+                                    v-model="vendor.address" 
+                                    autocomplete="off"
+                                    placeholder="VD: Số 82 Duy Tân, Dịch Vọng Hậu, Cầu Giấy, Hà Nội"
+                                 />
                         </div>
                         <div class="cont-r">
                             <div class="info-ma colum-r">
-                                <div class="colum-ma">
-                                        <div class="ma">Điện thoại
-                                            <!-- <span style="color: red;">*</span> -->
-                                        </div>
-                                        <ms-input type="text" :style="'inp-ma'" :id="'txtEmployeeCode'" tabindex="5" v-model="employee.phoneNumber" autocomplete="off"/>
-                                        
-                                    </div>
-                                    <div class="colum-name">
-                                            <div class="name">Website
-                                                
-                                            </div>
-                                            <ms-input type="text" :style="'inp-name'" tabindex="6" autocomplete="off"/>
-                                        
-                                    </div>
+                                <ms-input 
+                                    class="colum-ma"
+                                    classLaybel="ma"
+                                    labelText="Điện thoại"
+                                    styleClass="inp-ma"
+                                    id="txtEmployeeCode" 
+                                    tabInput="5" 
+                                    :maxlength="20"
+                                    v-model="vendor.phoneNumber" 
+                                    autocomplete="off"
+                                />
+
+                                    <ms-input 
+                                        class="colum-name"
+                                        classLaybel="name"
+                                        labelText="Website"
+                                        styleClass="inp-name"
+                                        tabInput="6" 
+                                        :maxlength="100"
+                                        v-model="vendor.website" 
+                                        autocomplete="off"
+                                    />
+
                             </div>
-                            <div class="info-donvi">
-                                    <div class="name-dv">
-                                        <div class="font700">Nhóm nhà cung cấp
-                                            
-                                        </div>
+                            <div class="info-donvi" id="id5">
+                                <div class="name-dv">
+                                    <div class="font700">{{ labelText }}
+                                        
                                     </div>
-                                    <ms-dropdown
-                                    type="text"
-                                    title="Đơn vị không được để trống."
-                                   
-                                    id="DepartmentName"
-                                    tabindex="7"
-                                    idStyle = "id5"
-                                    :departmentList="departmentList"
-                                    :departmentId="employee.departmentID"
-                                    :departmentName="employee.departmentName"
-                                    
-                                    @departmentId="getDepartmentId($event)"
-                                    @departmentName="getDepartmentName($event)"
-                                />
-                               
-                                </div> 
-                                <div class="info-donvi">
-                                    <div class="name-dv">
-                                        <div class="font700">Nhân viên mua hàng
-                                           
-                                        </div>
-                                    </div>
-                                    <ms-dropdown
-                                    type="text"
-                                    title="Đơn vị không được để trống."
-                                  
-                                    id="DepartmentName"
-                                    tabindex="8"
-                                    idStyle = "id4"
-                                    :departmentList="departmentList"
-                                    :departmentId="employee.departmentID"
-                                    :departmentName="employee.departmentName"
-                                    
-                                    @departmentId="getDepartmentId($event)"
-                                    @departmentName="getDepartmentName($event)"
-                                />
-                               
                                 </div>
+                                <div class="combobox inf-chucvu">
+                                    <!-- <multiselect
+                                    v-model="vendor.groupVendorID"
+                                    :options="listGroupVendor"
+                                    label="label"
+                                    mode="tags"
+                                    :close-on-select="true"
+                                    :clearOnSelect="true"
+                                    :searchable="true"
+                                    noResultsText="Không có dữ liệu hiển thị."
+                                    :disabled="false"
+                                    :canClear="false"
+                                    :canDeselect="false"
+                                    /> -->
+                                    <!-- <multiselect
+                                     v-model="value" 
+                                    :options="listGroupVendor"
+                                     :multiple="true" 
+                                     :close-on-select="false" 
+                                     :clear-on-select="false"
+                                    :preserve-search="true"
+                                     placeholder="Pick some" 
+                                    noResultsText="Không có dữ liệu hiển thị."
+                                     label="groupVendorCode"
+                                    track-by="groupVendorCode" 
+                                    :preselect-first="true"/> -->
+                                    <!-- <VueMultiselect
+                                    v-model="value"
+                                    :options="listPaymentTerm"
+                                    :preserve-search="false"
+                                    :multiple="true"
+                                    :close-on-select="false"
+                                    placeholder="Pick some"
+                                    label="code"
+                                    track-by="code" 
+                                    /> -->
+                                </div>
+                            </div>
+                            <ms-combobox
+                                tabInput="7"
+                                :options="listGroupVendor"
+                                v-model="vendor.groupVendorCode"
+                                :appendToBody="true"
+                                :searchable="true"
+                                idStyle="id5"
+                                :listHeader="headerVendor"
+                                :closeOnSelect="false"
+                                labelText="Nhóm nhà cung cấp"
+                                label="label"
+                                :lazyLoading="true"
+                                
+                            />
+                            <!-- <DxTagBox :items="simpleProducts"/> -->
+                            <ms-combobox
+                                tabInput="8"
+                                :options="listEmployeeOptions"
+                                v-model="vendor.employeeID"
+                                :appendToBody="true"
+                                :searchable="true"
+                                idStyle="id4"
+                                :listHeader="headerEmployee"
+                                :closeOnSelect="true"
+                                labelText="Nhân viên mua hàng"
+                                label="label"
+                                :lazyLoading="true"
+                                @eLoadNext="loadNextEmployee"
+                                
+                            /> 
                         </div>
                     </div>
                     <div class="content-pog-b" style="width:100%">
@@ -142,96 +200,145 @@
                                     <div class="colum-ma">
                                             <div class="ma">Người liên hệ </div>
                                             <div class="merge-row">
-                                                <ms-dropdown
+                                                <ms-dropdown-info
                                                     type="text"
-                                                    title="Đơn vị không được để trống."
+                                                    title=""
                                                     idStyle = "id3"
                                                     id="width162"
                                                     tabindex="9"
                                                     label="Xưng hô"
-                                                    :departmentList="departmentList"
-                                                    :departmentId="employee.departmentID"
-                                                    :departmentName="employee.departmentName"
-                                                   
-                                                    @departmentId="getDepartmentId($event)"
-                                                    @departmentName="getDepartmentName($event)"
+                                                    :itemData="votive"
+                                                    v-model="vendor.vocative"
+                                                    :autoFocus="true"
                                                 />
                                                 <!-- <ms-input type="text" :style="'inp-ma'" :id="'width162'"   autocomplete="off"/> -->
-                                                <ms-input type="text" :style="'inp-name'" placeholder="Họ và tên" tabindex="10" autocomplete="off"/>
+                                                <ms-input 
+                                                    
+                                                    
+                                                    :isHasLabel="false"
+                                                    styleClass="inp-name"
+                                                    id="txtContact" 
+                                                    placeholder="Họ và tên" 
+                                                    tabInput="10" 
+                                                    v-model="vendor.contact" 
+                                                    autocomplete="off"
+                                                />
+                                                <!-- <ms-input type="text" :style="'inp-name'" id="txtContact" placeholder="Họ và tên" tabindex="10" v-model="vendor.contact" autocomplete="off"/> -->
                                             </div>
                                         </div>
                                 </div>
                                 <div class="chucvu">
-                                    <div class="colum-ma margin6">
-                                    
-                                        <ms-input type="text" class="inp-ma chucdanh" placeholder="Email" name="input"  tabindex="11" id="txtChucDanh"   autocomplete="off"/>
-                                    </div>
+                                    <ms-input
+                                         styleparent="width100"
+                                        class="colum-ma margin6"
+                                        :isHasLabel="false"
+                                        styleClass="inp-ma chucdanh"
+                                        id="txtChucDanh" 
+                                        placeholder="Email" 
+                                        tabInput="11"
+                                        v-model="vendor.contactEmail"  
+                                        autocomplete="off"
+                                    />
+
                                 </div> 
-                                <div class="info-ma first end">
-                                    <div class="colum-name didong tkgh">
-                                        
-                                        <input type="text" class="inp-name inp-didong tkgh" name="input" placeholder="Số điện thoại" tabindex="12" id="txtTKNH"  autocomplete="off">
-                                    </div>
+                                <div class="info-ma first">
+                                    <ms-input 
+                                         class="colum-name didong tkgh"
+                                        :isHasLabel="false"
+                                        styleClass="inp-name inp-didong tkgh"
+                                        placeholder="Số điện thoại" 
+                                        tabInput="12" 
+                                        id="txtTKNH" 
+                                        v-model="vendor.contactPhone" 
+                                        autocomplete="off"
+                                    />
                                 
                                 </div>
                             </div>
                             <div class="cont-r">
                                 <div class="chucvu">
-                                    <div class="colum-ma">
-                                        <div class="name-cv">Đại diện theo PL</div>
-                                        <ms-input type="text" class="inp-ma chucdanh" placeholder="Đại diện theo PL" name="input"  tabindex="13" id="txtChucDanh"  autocomplete="off"/>
-                                    </div>
+                                    <ms-input
+                                         styleparent="width100"
+                                        class="colum-ma"
+                                        classLaybel="name-cv"
+                                        labelText="Đại diện theo PL"
+                                        styleClass="inp-ma chucdanh"
+                                        placeholder="Đại diện theo PL" 
+                                        name="input" 
+                                        v-model="vendor.agentLaw" 
+                                        tabInput="13" 
+                                        id="txtChucDanh"  
+                                        autocomplete="off"
+                                    />
+
                                 </div> 
                             
                             </div>
                         </div>
                         <div class="content-pog-bot margin8" v-if="tabActive === 1">
                             <div class="info-ma">
-                                <div class="colum-name didong">
-                                    <div class="name didong">Điều khoản thanh toán</div>
-                                        <ms-dropdown
-                                            type="text"
-                                            title="Đơn vị không được để trống."
-                                            :autoFocus="true"
-                                            id="width206"
-                                            tabindex="10"
-                                            idStyle = "id2"
-                                            :departmentList="departmentList"
-                                            :departmentId="employee.departmentID"
-                                            :departmentName="employee.departmentName"
-                                            
-                                            @departmentId="getDepartmentId($event)"
-                                            @departmentName="getDepartmentName($event)"
-                                        />
-                                </div>
-                                <div class="colum-name coding">
-                                        <div class="name coding">Số ngày được nợ</div>
-                                        <input type="text" class="inp-name inp-coding" name="input"  tabindex="11" id="txtDTCoDinh"  autocomplete="off">
-                                </div>
-                                <div class="colum-name email">
-                                    <div class="name email">Số nợ tối đa</div>
-                                    <input type="text" class="inp-name inp-email" name="input"  tabindex="12" id="txtEmail"  autocomplete="off">
-                                    
-                                </div>
+                                <ms-combobox
+                                :class="'GroupVendor'"
+                                v-model="vendor.rule"
+                                :options="listPaymentTerm"
+                                :appendToBody="true"
+                                :autoFocus="true"
+                                tabInput="10"
+                                idStyle="id2"
+                                :searchable="true"
+                                :listHeader="headerPaymentTerm"
+                                :closeOnSelect="true"
+                                labelText="Điều khoản thanh toán"
+                                label="label"
+                                :lazyLoading="true"
+                              
+                            />
+                                <ms-input 
+                                     class="colum-name coding"
+                                     classLaybel="name coding"
+                                     labelText="Số ngày được nợ"
+                                     styleClass="inp-name inp-coding paddingLeft"
+                                     :isNumberInput="true"
+                                     name="input" 
+                                     v-model="vendor.dayOwed" 
+                                     tabInput="11" 
+                                     id="txtDTCoDinh"  
+                                     autocomplete="off"
+                                     :maxlength="18"
+                                />
+
+                                <ms-input 
+                                     class="colum-name email"
+                                     classLaybel="name email"
+                                     labelText="Số nợ tối đa"
+                                     styleClass="inp-name inp-email paddingLeft"
+                                     :isNumberInput="true"
+                                     name="input" 
+                                     v-model="vendor.maximumDebt" 
+                                     tabInput="12" 
+                                     id="txtEmail"  
+                                     autocomplete="off"
+                                     :maxlength="18"
+                                />
+ 
                             </div>
                             <div class="info-ma end">
-                                <div class="colum-name didong payment">
-                                    <div class="name didong">Tài khoản công nợ phải trả</div>
-                                        <ms-dropdown
-                                            type="text"
-                                            title="Đơn vị không được để trống."
-                                            idStyle = "id1"
-                                            id="width206"
-                                            tabindex="13"
-                                            
-                                            :departmentList="departmentList"
-                                            :departmentId="employee.departmentID"
-                                            :departmentName="employee.departmentName"
-                                            
-                                            @departmentId="getDepartmentId($event)"
-                                            @departmentName="getDepartmentName($event)"
-                                        />
-                                </div>
+                                <ms-combobox
+                                :class="'GroupVendor'"
+                                :options="listaccountPaymentTerm"
+                                v-model="vendor.acountPayable"
+                                :appendToBody="true"
+                                tabInput="13"
+                                :isPlus="false"
+                                idStyle="id1"
+                                :searchable="true"
+                                :listHeader="accountPaymentTerm"
+                                :closeOnSelect="true"
+                                labelText="Tài khoản công nợ phải trả"
+                                label="label"
+                                :lazyLoading="true"
+                                
+                            />
                                 
                             </div>
                         </div>       
@@ -259,57 +366,73 @@
             @save="save()"          
             @closeDialog="onCancelDialog"
         />
-            
+        <ms-loading v-if="isLoading" />
         </div>
 </template>
 <script>
+// import vMultiselect from "@vueform/multiselect";
+// import "@vueform/multiselect/themes/default.css";
 // import TheInputVue from "./TheInput.vue";
 // import CompTabs from './CompTabs.vue';
-import msButton from '../../components/base/ms-button.vue';
-import msDropdown from "../../components/base/ms-dropdown.vue";
+import msCombobox from '../../components/base/combobox/ms-combobox.vue'
+import msButton from '../../components/base/button/ms-button.vue';
+// import msDropdown from "../../components/base/ms-dropdown.vue";
+import msLoading from "../../components/base/ms-loading.vue";
+import msDropdownInfo from "../../components/base/ms-dropdownInfo.vue";
 import msRadio from "../../components/base/ms-radio.vue";
-import msDialog from '../../components/base/ms-dialog.vue'
+import msDialog from '../../components/base/dialog/ms-dialog.vue'
 import Resource from "@/Resource/Resource";
 import keyCode from "@/enum/keyCode";
-import msInput from "@/components/base/ms-input.vue";
+import msInput from "@/components/base/input/ms-input.vue";
 import {RepositoryFactory} from '@/Repository/RepositoryFactory';
- const EmployeeRepository = RepositoryFactory.get('Employees');
-//  const DepartmentRepository = RepositoryFactory.get('Departments');
+ const VendorRepository = RepositoryFactory.get('Vendors');
 import DepartmentRepository from "@/Repository/DepartmentRepository";
-
-
+// import DxTagBox from 'devextreme-vue/tag-box';
+// import Multiselect from 'vue-multiselect'
 export default {
     name: "VendorDetails",
     components: {
+        
+        msCombobox,
         msButton,
-        msDropdown,
         msRadio,
         msDialog,
         msInput,
+        msDropdownInfo,
+        msLoading,
         
     },
     props: {
         id: String,
-        employeeCode: String,
-        employeeID: String,
+        vendorCode: String,
+        vendorID: String,
         
     },
-    beforeMount() {
+    created() {
         // Xử lý UI form thêm hoặc sửa trước khi mở form
         this.handleUI();
-        // Xử lý Lấy mã nhân viên mới
-        this.getNewEmployeeCode();
+        
+        this.getNewVendorCode();
+        
         // Lấy danh sách phòng ban đưa lên UI
-        this.getDepartment();
+        //  this.getDepartment();
         // Lấy dữ liệu nhân viên đưa vào trong form
-        this.userInfo(this.employeeCode);
+       
+          this.userInfo(this.vendorCode);
+
+        
     },
     // Tự động focus mã nhân viên khi form mở
     mounted() {
         // this.$refs.input.focus();
-        
-        this.employeeOld = structuredClone(this.employee);
+        this.$refs.input.$refs.input.focus();
+        this.vendorOld = structuredClone(this.vendor);
+        this.getPaymentEmployee();
+        this.getGroupVendor();
+        this.vendor.acountPayable = this.listaccountPaymentTerm[0].code
+        // this.vendor = {...this.vendor, acountPayable: this.listaccountPaymentTerm[0].code}
     },
+  
     
     methods: {
         /**
@@ -353,7 +476,7 @@ export default {
                    
 
             try {
-                if(JSON.stringify(this.employee) == JSON.stringify(this.employeeOld)){
+                if(JSON.stringify(this.vendor) == JSON.stringify(this.vendorOld)){
                     // this.$parent.isDialog = false;
                   
                     this.$emit("closeModal");
@@ -411,45 +534,46 @@ export default {
          * Thực hiện lấy dữ giới tính
          **  Author: Đinh Công Trứ(2/11/2022)
          */
-        getGender(event) {
-            this.employee.gender = event;
-        },
+        // getGender(event) {
+        //     this.employee.gender = event;
+        // },
         /**
          * Thực hiện lấy dữ liệu đơn vị gồm id và tên
          **  Author: Đinh Công Trứ(2/11/2022)
          */
-         getDepartmentId(event) {
-            this.employee.departmentID = event;
+        //  getDepartmentId(event) {
+        //     this.employee.departmentID = event;
     
-        },
-        getDepartmentName(event) {
-            this.employee.departmentName = event;
+        // },
+        // getDepartmentName(event) {
+        //     this.employee.departmentName = event;
             
             
-        },
+        // },
         /**
          * Thực hiện xử lý validate dữ liệu mã nhân viên
          **  Author: Đinh Công Trứ(2/11/2022)
          */
-        validateEmployeeCode(code) {
+        validateVendorCode(code) {
             if (!code) {
-                this.error.employeeCode = "form-input-error";
+                this.error.vendorCode = false;
             } else {
-                this.error.employeeCode = "";
+                this.error.vendorCode = true;
             }
+
         },
         /**
          * Thực hiện xử lý validate dữ liệu tên nhân viên
          **  Author: Đinh Công Trứ(2/11/2022)
          */
-        validateEmployeeName(name) {
+        validateVendorName(name) {
             let me = this;
             return () => {
                 
                 if (!name) {
-                    me.error.employeeName = "form-input-error";
+                    me.error.vendorName = "form-input-error";
                 } else {
-                    me.error.employeeName = "";
+                    me.error.vendorName = "";
                 }
             }
         },
@@ -458,23 +582,23 @@ export default {
          **  Author: Đinh Công Trứ(2/11/2022)
          */
         validateForm() {
-            if (!this.employee.employeeCode) {
-                this.error.employeeCode = "form-input-error";
+            if (!this.vendor.vendorCode) {
+                this.error.vendorCode = "form-input-error";
                 this.isError = !this.isError;
                 this.errorMgs = Resource.ERROR.vendorCodeError;
                return false;
                
             } else {
-                this.error.employeeCode = "";
+                this.error.vendorCode = "";
             }
-            if (!this.employee.employeeName) {
-                this.error.employeeName = "form-input-error";
+            if (!this.vendor.vendorName) {
+                this.error.vendorName = "form-input-error";
                 this.isError = !this.isError;
                 this.errorMgs = Resource.ERROR.vendorNameError;
                return false;
                
             } else {
-                this.error.employeeName = "";
+                this.error.vendorName = "";
             }
             // if (!this.employee.departmentName) {
             //     this.error.departmentName = "form-input-error";
@@ -508,14 +632,14 @@ export default {
          * Thực hiện lấy mã nhân viên mới nhất
          **  Author: Đinh Công Trứ(2/11/2022)
          */
-        getNewEmployeeCode() {
-            if (this.id == "edit-vendor" || this.id == "nhanban-form" || this.id =="add-vendor") {
+       async getNewVendorCode() {
+            if (this.id =="add-vendor" || this.id == "nhanban-form") {
                 const me = this;
                 try{
-                    EmployeeRepository.getNewEmployeeCode()
+                   await VendorRepository.getNewVendorCode()
                     .then((response) => {                    
-                        this.employee.employeeCode = response.data.EmployeeCode;  
-                        this.employeeOld.employeeCode = response.data.EmployeeCode;                        
+                        this.vendor.vendorCode = response.data.VendorCode;  
+                        this.vendorOld.vendorCode = response.data.VendorCode;                        
                     })
                     .catch((error) => {
                         if(error.response.status == 500){
@@ -556,23 +680,16 @@ export default {
          **  Author: Đinh Công Trứ(2/11/2022)
          */
 
-        userInfo(id) {
+      async userInfo(id) {
             try {
                 if (this.id == "edit-vendor") {
                     const me = this;
-                    EmployeeRepository.getInfoEmployee(id)
+                    me.isLoading = true;
+                   await VendorRepository.getInfoVendor(id)
                     .then((response) => {
-                            // me.employeeOld = response.data.data[0];
-                            me.employee = response.data.data[0];
-                            me.employee.dateOfBirth = this.formatDate(
-                                response.data.data[0].dateOfBirth
-                            );
-                 
-                            me.employee.identitiDate = this.formatDate(
-                                response.data.data[0].identitiDate
-                            );
-                            me.employeeOld=structuredClone(me.employee);
-                            
+                            me.vendor = response.data.data[0];
+                            me.vendorOld=structuredClone(me.vendor);
+                           
                             
                         })
                         .catch((error) => {
@@ -584,40 +701,120 @@ export default {
                                 me.errorMgs = error.response.data.userMsg;
                             }
                         });
-                    
+                     me.isLoading = false;
                 }
                 if (this.id == "nhanban-form") {                  
                     const me = this;
-                    EmployeeRepository.getInfoEmployee(id)
+                    VendorRepository.getInfoVendor(id)
                     .then((response) => {
                      
-                     me.employee = response.data.data[0];
-                        
-                      
-                 
-                     me.employee.dateOfBirth = this.formatDate(
-                         response.data.data[0].dateOfBirth
-                     );
-                     me.employee.identitiDate = this.formatDate(
-                         response.data.data[0].identitiDate
-                     );
-                     me.employee.gender = response.data.data[0].gender;
-                     this.employeeOld=structuredClone(this.employee); 
+                     me.vendor = response.data.data[0];
+                     this.vendorOld=structuredClone(this.vendor);   
+                    me.getNewVendorCode();
 
-                     
-                     
                  })
-                //  this.employee.employeeCode = ""
-                 this.getNewEmployeeCode()   ;
-                       
+                 
                 }
             } catch (error) {
                 this.isError = !this.isError;
                 this.errorMgs = Resource.ERROR.loadDataError;
             }
         },
+         /**------------------------------------------
+        * Lấy danh sách nhân viên mua hàng.
+        *Author: Đinh Công Trứ(2/11/2022)
+        --------------------------------------------*/
+        async getPaymentEmployee() {
+            try{
+                let me = this;
+                let pageSize = 10;
+                me.isLoading = true;
+                await VendorRepository.getVendorByPagding(pageSize)
+                    .then((res) => {
+                    for (const i of res.data.data) {
+                        let object = {};
+                        object.label = i.employeeName;
+                        object.value = i.employeeID;
+                        object.code = i.employeeCode;
+                        //build mảng các department để truyền vào combobox
+                        me.listEmployeeOptions.push(object);
+                    }
+                    // console.log(this.listEmployeeOptions);
+                    })
+                    .catch((error) => {
+                    console.log(error);
+                    });
+                    me.isLoading = false;
+            } catch(error){
+                this.isError = !this.isError;
+                this.errorMgs = Resource.ERROR.loadDataError;
+            }
+        },
+        /**------------------------------------------
+        * Lấy danh sách nhóm nhà cung cấp.
+        *Author: Đinh Công Trứ(2/11/2022)
+        --------------------------------------------*/
+        async getGroupVendor() {
+            try{
+                let me = this;
+                let pageSize =10;
+                me.isLoading = true;
+                await VendorRepository.getVendorByPagding(pageSize)
+                    .then((res) => {
+                    for (const y of res.data.data) {
+                        let object = {};
+                        object.label = y.groupVendorName;
+                        object.value = y.groupVendorID;
+                        object.code = y.groupVendorCode;
+                        //build mảng các department để truyền vào combobox
+                        me.listGroupVendor.push(object);
+                        // console.log(t
+                    }
+                    })
+                    .catch((error) => {
+                    console.log(error);
+                    });
+                    me.isLoading = false;
+            } catch(error){
+                this.isError = !this.isError;
+                this.errorMgs = Resource.ERROR.loadDataError;
+            }
+        },
+        /**------------------------------------------
+    *Lazyloading thêm data từ server.
+    *Author: Đinh Công Trứ(2/11/2022)
+    --------------------------------------------*/
+   async loadNextEmployee() {
+        try{
+        let me = this;
+        me.emPageSize = me.emPageSize + 10;
+        // me.listEmployeeOptions = [];
+       me.isLoading = true;
+    // console.log(this.emPageSize);
+      await VendorRepository.getVendorByPagding(me.emPageSize)
+        .then((res) => {
+          //build combobox cho employee
+          me.listEmployeeOptions = [];
+        //   let x = res.data.Data;
+          for (const x of res.data.data) {
+                        let obj = {};
+                        obj.label = x.employeeName;
+                        obj.value = x.employeeID;
+                        obj.code = x.employeeCode;
+                        
+                        me.listEmployeeOptions.push(obj);
+                    }
+    });
+  
+    me.isLoading = false;
+        // this.getPaymentEmployee()
+        }catch(error) {
+            this.isError = !this.isError;
+            this.errorMgs = Resource.ERROR.loadDataError;
+            }
+     },
         /**
-         * Thực hiện Lưu dữ liệu thêm mới hoặc sửa nhân viên
+         * Thực hiện Lưu dữ liệu thêm mới hoặc sửa nhà cung cấp
          **  Author: Đinh Công Trứ(2/11/2022)
          */
 
@@ -625,23 +822,10 @@ export default {
             const validate = this.validateForm();
 
             const me = this;
-            // Thêm mới nhân viên
+            // Thêm mới nhà cung cấp
             if (validate && this.id == "add-vendor") {
-                if (this.employee.dateOfBirth) {
-                    this.employee.dateOfBirth = new Date(
-                        this.employee.dateOfBirth
-                    );
-                }
-                if (this.employee.identitiDate) {
-                    this.employee.identitiDate = new Date(
-                        this.employee.identitiDate
-                    );
-                }
-                if(this.employee.gender){
-                    this.employee.gender = parseInt(this.employee.gender)
-                }
                 try {
-                    EmployeeRepository.postEmployee(this.employee)
+                    VendorRepository.postVendor(this.vendor)
                     .then( res =>  {
                         if(res){
                         this.$emit("closeModal");
@@ -663,23 +847,11 @@ export default {
             } else{
                 this.isWarring =  false;
             }
-            // Nhân bản nhân viên
+            // Nhân bản nhà cung cấp
             if (validate && this.id == "nhanban-form") {
-                if (this.employee.dateOfBirth) {
-                    this.employee.dateOfBirth = new Date(
-                        this.employee.dateOfBirth
-                    );
-                }
-                if (this.employee.identitiDate) {
-                    this.employee.identitiDate = new Date(
-                        this.employee.identitiDate
-                    );
-                }
-                if(this.employee.gender){
-                    this.employee.gender = parseInt(this.employee.gender)
-                }
+               
                try {
-                EmployeeRepository.postEmployee(this.employee)
+                VendorRepository.postVendor(this.vendor)
                 .then( res =>  {
                         if(res){
                         this.$emit("closeModal");
@@ -702,24 +874,11 @@ export default {
             } else{
                 this.isWarring =  false;
             }
-            // Sửa nhân viên
+            // Sửa nhà cung cấp
             if ( validate && this.id == "edit-vendor") {
-                if (this.employee.dateOfBirth) {
-                    this.employee.dateOfBirth = new Date(
-                        this.employee.dateOfBirth
-                    );
-                }
-                if (this.employee.identitiDate) {
-                    this.employee.identitiDate = new Date(
-                        this.employee.identitiDate
-                    );
-                }
-
-                if(this.employee.gender){
-                    this.employee.gender = parseInt(this.employee.gender)
-                }
+               
                try {
-                EmployeeRepository.updateEmployee(this.employeeID,this.employee)
+                VendorRepository.updateVendor(this.vendorID,this.vendor)
                 .then(() => {
                         this.$emit("closeModal");
                         me.$emit("refreshData");
@@ -742,7 +901,7 @@ export default {
             }
         },
         /**
-         * Thực hiện xử lý Lưu nhân viên khi ấn button thêm và cất
+         * Thực hiện xử lý Lưu nhà cung cấp khi ấn button thêm và cất
          **  Author: Đinh Công Trứ(2/11/2022)
          */
         saveAndAdd() {
@@ -750,24 +909,12 @@ export default {
 
             const me = this;
             if (validate && this.id == "add-form") {
-                if (this.employee.dateOfBirth) {
-                    this.employee.dateOfBirth = new Date(
-                        this.employee.dateOfBirth
-                    );
-                }
-                if (this.employee.identitiDate) {
-                    this.employee.identitiDate = new Date(
-                        this.employee.identitiDate
-                    );
-                }
-                if(this.employee.gender){
-                    this.employee.gender = parseInt(this.employee.gender)
-                }
+                
                 try {
-                    EmployeeRepository.postEmployee(this.employee)
+                    VendorRepository.postVendor(this.vendor)
                     .then(function () {
                         me.$emit("refreshData");
-                        me.employee = { };
+                        me.vendor = {};
                         
                     })
                     .catch(function (error) {
@@ -786,26 +933,14 @@ export default {
             } else{
                 this.isWarring =  false;
             }
-            // nhân bản nhân VIÊN
+            // nhân bản nhà cung cấp
             if (validate && this.id == "nhanban-form") {
-                if (this.employee.dateOfBirth) {
-                    this.employee.dateOfBirth = new Date(
-                        this.employee.dateOfBirth
-                    );
-                }
-                if (this.employee.identitiDate) {
-                    this.employee.identitiDate = new Date(
-                        this.employee.identitiDate
-                    );
-                }
-                if(this.employee.gender){
-                    this.employee.gender = parseInt(this.employee.gender)
-                }
+               
                 try {
-                EmployeeRepository.postEmployee(this.employee)
+                VendorRepository.postVendor(this.vendor)
                 .then(function () {
                         me.$emit("refreshData");
-                        me.employee = { };
+                        me.vendor = {};
                         
                     })
                     .catch(function (error) {
@@ -824,26 +959,14 @@ export default {
             } else{
                 this.isWarring =  false;
             }
-            // Sửa nhân viên
+            // Sửa nhà cung cấp
             if (validate && this.id == "edit-vendor") {
-                if (this.employee.dateOfBirth) {
-                    this.employee.dateOfBirth = new Date(
-                        this.employee.dateOfBirth
-                    );
-                }
-                if (this.employee.identitiDate) {
-                    this.employee.identitiDate = new Date(
-                        this.employee.identitiDate
-                    );
-                }
-                if(this.employee.gender){
-                    this.employee.gender = parseInt(this.employee.gender)
-                }
+                
                 try {
-                EmployeeRepository.updateEmployee(this.employeeID,this.employee)
+                VendorRepository.updateVendor(this.vendorID,this.vendor)
                 .then(() => {
                         me.$emit("refreshData");
-                        me.employee = { };                      
+                        me.vendor = {};                      
                     })
                     .catch((error) => {
                         if(error.response.status == 500){
@@ -866,18 +989,20 @@ export default {
     },
     data() {
         return {
+            labelText:"",
             keyCode : keyCode,
             Resource :Resource,
-            employeeOld: {},
+            vendorOld: {},
             posts: [],
             isWarring: false,
             isDialog: false,
             error: {
-                employeeCode: true,
-                employeeName: true,
+                vendorCode: true,
+                vendorName: true,
                 departmentName: true,
             },
-            employee: {},
+            isLoading :false,
+            vendor: {},
             datagender:"Tổ chức",
             idButton: "",
             titleButton: "",
@@ -892,18 +1017,91 @@ export default {
             },
             radio:["Tổ chức","Cá nhân"],
                 
-            
+            votive:[
+                { name : "Anh"},
+                { name : "Bà"},
+                { name : "Bạn"},
+                { name : "Chị"}, 
+                { name : "Ông"},
+             
+
+            ],
+           
             MsTabs:[
                 { name : "Thông tin liên hệ"},
                 { name : "Điều khoản thanh toán"},
                 
             ],
             tabActive : 0,
+            //option cho danh sách nhân viên
+            listEmployeeOptions: [], 
+            //pagesize Employy default 10
+            emPageSize:10,
+            //option cho danh sách nhóm nhà cung cấp
+            listGroupVendor:[],
+            listPaymentTerm:[
+                {label:"Điều Khoản 1",value:"Điều Khoản 1",code:"DK1"},
+                {label:"Điều Khoản 2",value:"Điều Khoản 2",code:"DK2"},
+                {label:"Điều Khoản 3",value:"Điều Khoản 3",code:"DK3"},
+                {label:"Điều Khoản 4",value:"Điều Khoản 4",code:"DK4"},
+    
+            ],
+            listaccountPaymentTerm:[
+                {label:"Phải trả cho người bán",value:"331",code:"331"},
+                {label:"Phải trả người lao động khác",value:"3348",code:"3348"},
+                {label:"Thuế TTĐB (nếu có)",value:"3332 ",code:"3332 "},
+                {label:"Thuế bảo vệ môi trường",value:"33381  ",code:"33381  "},
+            ],
+            simpleProducts: [
+                {
+                    id: 1, name: "Iphone11"
+                },
+                {
+                    id: 2, name: "Iphone12"
+                },
+                {
+                    id: 3, name: "Iphone13"
+                },
+                {
+                    id: 4, name: "Iphone14"
+                },
+                {
+                    id: 5, name: "Iphone15"
+                }
+            ],
+            headerEmployee: [
+                {
+                text: "Mã nhân viên",
+                fieldName: "code",
+                columnWidth: 150,
+                },
+                {
+                text: "Tên nhân viên",
+                fieldName: "label",
+                columnWidth: 231,
+                },
+            ],
+            headerVendor:[
+                { fieldName: 'code', text: 'Mã Nhóm KH, NCC', columnWidth: 150, },
+                { fieldName: 'label', text: 'Tên Nhóm KH, NCC', columnWidth: 231, },
+            ],
+            headerPaymentTerm:[
+                      { fieldName: 'code', text: 'Mã điều khoản thanh toán', columnWidth: 180, },
+                      { fieldName: 'label', text: 'Tên điều khoản thanh toán', columnWidth: 240, },
+                    ],
+            accountPaymentTerm:[
+                { fieldName: 'code', text: 'Số tài khoản', columnWidth: 130,},
+                { fieldName: 'label', text: 'Tên tài khoản', columnWidth: 180, },
+            ],
+            value:[]
         };
     },
 };
 </script>
 <style>
+/* vendorDEtils*/
+
+
 #cancel-add-form{
     margin: 12px 0px 12px 0px;
     width: 80px;
@@ -988,7 +1186,6 @@ ul li .item-tabs:hover{
 }
 #width162{
     width: 162px !important;
-    margin-right: 8px;
 }
 .border1px{
     border: 1px solid #babec5;
@@ -1003,6 +1200,8 @@ ul li .item-tabs:hover{
 }
 .merge-row {
     display: flex;
+    width: 60%;
+    align-items: end;
 }
 .margin8{
     margin-left: 8px;
@@ -1012,5 +1211,22 @@ ul li .item-tabs:hover{
 }
 .payment{
     margin-top: 12px ;
+}
+#txtContact{
+    margin-left: 8px;
+}
+.GroupVendor{
+    margin-right: 8px;
+    width: 222px;
+    margin-top: 0;
+}
+.end{
+    padding-top: 12px !important;
+}
+.paddingLeft{
+    padding-right: 8px !important;
+}
+.width100{
+    width:100%;
 }
 </style>

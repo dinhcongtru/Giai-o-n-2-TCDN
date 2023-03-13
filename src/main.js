@@ -10,6 +10,13 @@ import CashProcess from "./views/Cash/CashProcess.vue"
 import TheMain from "./components/TheMain.vue"
 import TheVendor from "./views/Vendor/DIVendor.vue"
 import ReceiptDetails from './views/Receipt/ReceiptDetalis.vue';
+import 'devextreme/dist/css/dx.light.css';
+//vue next select
+// import VueSelect from 'vue-next-select'
+// import 'vue-next-select/dist/index.min.css'
+//vue select
+// import vSelect from 'vue-select';
+// import 'vue-select/dist/vue-select.css';
 
 const emitter = mitt();
 const app = createApp(App);
@@ -58,7 +65,6 @@ app.use(VueClickAway);
 app.use(vue);
 app.config.globalProperties.emitter = emitter;
 app.mount("#app");
-
 
 app.directive("clickoutside", {
     inserted: (el, binding, vnode) => {

@@ -1,8 +1,8 @@
 <template>
-    <table class="table">
+    <table class="ms-table">
         <thead>
             <tr>
-                <th align="center" class="thead1">
+                <th align="center" class="theadCheck">
                     <input 
                         id="checkbox-header"
                         ref="checkBoxAll"
@@ -14,35 +14,35 @@
                         
                         />
                 </th>
-                <th align="left" class="thead2" style="min-width:220px">MÃ NHÀ CUNG CẤP</th>
-                <th align="left" class="thead3" style="min-width:150px">NHÓM KH, NCC</th>
+                <th align="left" class="th2" style="min-width:220px">MÃ NHÀ CUNG CẤP</th>
+                <th align="left" class="th3" style="min-width:150px">NHÓM KH, NCC</th>
                 <th align="left" style="min-width:240px">TÊN NHÀ CUNG CẤP</th>
                 <th align="left" style="min-width:133px">MÃ SỐ THUẾ</th>
                 <th align="left" style="min-width:150px" title="Số chứng minh nhân dân">SỐ CMND</th>
                 <th align="left" style="min-width:200px">CHI NHÁNH</th>
                 
-                <th class="item-cn">CHỨC NĂNG</th>
+                <th class="cn-item">CHỨC NĂNG</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(employee, index) in employees" class="trTable" :key="employee.employeeID" :class="{'background-table': employee.IsChecked}" @dblclick="openFormDetail(index, 'edit-vendor')">
-                <td align="center" class="th1" :class="{ 'background-table': employee.IsChecked }"><input type="checkbox" :id= employee.employeeID class="input-check-table" ref="checkboxRow" v-model="employee.IsChecked" @click="handleClickCheck()"></td>
-                <td  class="th2" :class="{ 'background-table': employee.IsChecked }">{{ employee.employeeCode }}</td>
-                <td  class="th3" :class="{ 'background-table': employee.IsChecked }"></td>
-                <td>{{ employee.employeeName || "" }}</td>
-                <td>{{ employee.telephoneNumber || "" }}</td>
-                <td>{{ employee.identityNumber || "" }}</td>
-                <td>{{ employee.bankBranchName || "" }}</td>
+            <tr v-for="(vendor, index) in vendors" class="trTable" :key="vendor.vendorID" :class="{'background-table': vendor.IsChecked}" @dblclick="openFormDetail(index, 'edit-vendor')">
+                <td align="center" class="tdCheck" :class="{ 'background-table': vendor.IsChecked }"><input type="checkbox" :id= vendor.vendorID class="input-check-table" ref="checkboxRow" v-model="vendor.IsChecked" @click="handleClickCheck()"></td>
+                <td  class="td2" :class="{ 'background-table': vendor.IsChecked }">{{ vendor.vendorCode }}</td>
+                <td  class="td3" :class="{ 'background-table': vendor.IsChecked }">{{ vendor.groupVendorCode }}</td>
+                <td>{{ vendor.vendorName || "" }}</td>
+                <td>{{ vendor.taxCode || "" }}</td>
+                <td>{{ vendor.identityNumber || "" }}</td>
+                <td>{{ vendor.address || "" }}</td>
                 <!-- <td>{{ employee.departmentName || "" }}</td>
                 <td>{{ employee.bankAccountNumber || "" }}</td>
                 <td>{{ employee.bankName || "" }}</td>
                 <td>{{ employee.bankBranchName || "" }}</td> -->
-                <td class="td-cn" :class="[featureDropdown == index && zIndex5,employee.IsChecked && backGroundTbl,]" >
+                <td class="td-tool" :class="[featureDropdown == index && zIndex5,vendor.IsChecked && backGroundTbl,]" >
                     <div class="cn-edit">
                         <div class="edit-table" id="edit-nv" @click.self="onToggleModal(index, 'edit-vendor')">{{Resource.CONTENT.btnEdit}}</div>
-                        <span class="icon-edit"  @click="onToggleRepair(index,employee.employeeCode,employee.employeeID)" :class="[index == featureDropdown && isDropdown && dropdownIconBorder && 'boder1pxblue']">
+                        <span class="icon-edit"  @click="onToggleRepair(index,vendor.vendorCode,vendor.vendorID)" :class="[index == featureDropdown && isDropdown && dropdownIconBorder && 'boder1pxblue']">
                             <div class="detail-cn" v-show="showDelete == index">
-                                <div class="xoa" id="delete" @click="onDeleteEmployee()">{{Resource.TOTALTOOL.xoa}}</div>
+                                <div class="xoa" id="delete" @click="onDeleteVendor()">{{Resource.TOTALTOOL.xoa}}</div>
                                 <div class="nhanban" @click.self="onToggleModalNhanban(index, 'nhanban-form')">{{Resource.TOTALTOOL.nhanban}}</div>
                             <div class="ngungsd">{{Resource.TOTALTOOL.ngungsd}}</div>
                     </div>
@@ -55,17 +55,16 @@
                     ></div>
                    
                 </td>
-                <!-- <the-modal v-if="isModal == index" :employeeCode="employee.employeeCode" :employeeID="employee.employeeID" :id="id" @closeModal="onToggleModal" @refreshData="resfreshToPageOne" /> -->
-                <vendor-details v-if="isModal == index" :employeeCode="employee.employeeCode" :employeeID="employee.employeeID" :id="id" @closeModal="onToggleModal" @refreshData="resfreshToPageOne" />
+                <vendor-details v-if="isModal == index" :vendorCode="vendor.vendorCode" :vendorID="vendor.vendorID" :id="id" @closeModal="onToggleModal" @refreshData="resfreshToPageOne" />
 
             </tr>
         </tbody>
         <ms-dialog
             v-show="isDialog"
             dialogName="delete"
-            :employeeCode="codeEmployee"
-            :employeeID="idEmployee"
-            @closeDialog="onDeleteEmployee"
+            :vendorCode="codeVendor"
+            :vendorID="idVendor"
+            @closeDialog="onDeleteVendor"
             @deleteSuccess="refreshData"
         />
        
@@ -80,7 +79,7 @@
 </template>
 <script>
 
-import msDialog from './base/ms-dialog.vue';
+import msDialog from './base/dialog/ms-dialog.vue';
 import msLoading from './base/ms-loading.vue';
 // import TheModal from './TheModal.vue';
 import VendorDetails from '@/views/Vendor/VendorDetails.vue';
@@ -120,6 +119,7 @@ export default {
          unCheckAll(){
             this.$refs.checkBoxAll.checked = false;
             this.selected = [];
+            
          },
         /**Truyền thông báo ra bên ngoài load lại data
          * Author: Đinh Công Trứ(30/10/2022)
@@ -146,10 +146,10 @@ export default {
                 var select = this.selectAll;
                 this.selected = [];
                 const me = this;
-                this.employees.forEach(function (employee) {
-                    employee.IsChecked = !select;
+                this.vendors.forEach(function (vendor) {
+                    vendor.IsChecked = !select;
                     if (!select) {
-                        me.selected.push(employee.employeeID);
+                        me.selected.push(vendor.vendorID);
                     } else {
                         me.selected = [];
                     }
@@ -211,8 +211,8 @@ export default {
                 this.showDelete = index;
                 this.isDropdown = !this.isDropdown;
                 this.featureDropdown = index;
-                this.codeEmployee = code;
-                this.idEmployee = id;
+                this.codeVendor = code;
+                this.idVendor = id;
             }
         },
         
@@ -220,11 +220,12 @@ export default {
          * Thực hiện xử lý UI khi click feature Xóa hiện thị Dialog Xóa nhân viên
          **  Author: Đinh Công Trứ(30/10/2022)
          */
-        onDeleteEmployee() {
+        onDeleteVendor() {
             this.isDialog = !this.isDialog;
             this.isDropdown = false;
             this.featureDropdown = null;
             this.showDelete = null;
+            this.$emit("focusInput");
         },
         openFormDetail(index, edit){
             // console.log('bbbbbbbb');
@@ -300,7 +301,7 @@ export default {
             this.$emit("refreshData");
         },
     },
-    props: [ "idForm","employees"],
+    props: [ "idForm","vendors"],
     data() {
         return {
             isDropdown: false,
@@ -312,8 +313,8 @@ export default {
             backGroundTbl: "background-table",
             zIndex5: "z-index5",
             isDialog: false,
-            codeEmployee: null,
-            idEmployee: null,
+            codeVendor: null,
+            idVendor: null,
             isShowModal: false,
             isModal: null,
             isLoading: false,
@@ -331,3 +332,97 @@ export default {
     },
 };
 </script>
+<style scoped>
+.ms-table{
+    border-collapse: separate;
+    border-spacing: unset;
+}
+.theadCheck{
+    position: sticky;
+    left: 0;
+    border-right: 0;
+    height: 40px;
+}
+table.ms-table thead th{
+    text-align: left;
+    background-color: #eceef1;
+    padding: 0px 10px;
+    border-collapse: collapse;
+    /* border: 2px solid #f1f1f1; */
+    height: 32px;
+    border-right: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+}
+.tdCheck{
+    position: sticky;
+    left: 0;
+    background-color: white;
+    border-right: 0;
+    height: 48px !important;
+}
+table.ms-table tbody td{
+    border-collapse: collapse;
+    /* border: 1px solid #f1f1f1; */
+    height: 32px;
+    border-left: 0;
+    padding: 0px 10px;
+    z-index: 5;
+    background: white;
+    border-bottom: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+    border-right: 1px dotted #c7c7c7;
+}
+.cn-item{
+    text-align: center !important;
+    padding-right: 16px;
+    min-width: 90px;
+    border: 0;
+    position: sticky;
+    right: 0;
+    border-bottom: 1px solid #c7c7c7;
+    border-right: 1px dotted #c7c7c7;
+    border-left: 1px dotted #c7c7c7 !important;
+    border-right: 0 !important;
+}
+.td-tool{
+    position: sticky;
+    right: 0;
+    background-color: white;
+    border: 0;
+    border-bottom: 1px solid #c7c7c7;
+    border-right: 1px dotted #c7c7c7;
+    border-left: 1px dotted #c7c7c7 !important;
+}
+.th2{
+    position: sticky;
+    left: 41px !important;
+    height: 41px !important;
+
+}
+.th3{
+    position: sticky;
+    left: 282px !important;
+}
+.td2{
+    position: sticky;
+    left: 41px !important;
+    background-color: white;    position: sticky;
+    height: 41px !important;
+    background-color: white;
+}
+.td3{
+    position: sticky;
+    left: 282px;
+    background-color: white;
+}
+tr:has(input[type = checkbox]:checked) td {
+    background-color: #dcf1d8;
+}
+table.ms-table tbody tr:hover{
+    cursor: pointer;
+}
+table.ms-table tbody tr:hover td {
+    background: #e5f3ff!important;
+    cursor: pointer;
+}
+</style>

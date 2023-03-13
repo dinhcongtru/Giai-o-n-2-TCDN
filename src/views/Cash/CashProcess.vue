@@ -56,7 +56,7 @@
 </template>
 <script>
 import Resource from '@/Resource/Resource';
-import msDialogVue from '@/components/base/ms-dialog.vue';
+import msDialogVue from '@/components/base/dialog/ms-dialog.vue';
 export default {
     name:"CashProcess",
     components:{msDialogVue},

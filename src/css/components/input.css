@@ -168,3 +168,16 @@ input[type="date"]{
   tr:has(input[type = checkbox]:checked) td{
     background-color: #dcf1d8;
   }
+  .error {
+    border: 1px solid red !important;
+  }
+
+  .error:hover,
+  .error:focus {
+      border-color: var(--danger-color);
+  }
+
+  .error::placeholder {
+      font-size: 11px;
+      color: var(--danger-color);
+  }

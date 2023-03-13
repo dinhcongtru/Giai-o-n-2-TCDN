@@ -20,8 +20,13 @@
                 class="error-text"
                 title="Đơn vị không được để trống"
                 >Đơn vị không được để trống</span> -->
-            <div class="absolute-dropdown"  :class="[{ dropup: isOpenDropdown }]" @click="ToggleDropdown">
-                <div :class="[{ tranform: isOpenDropdown }]"  class="icon-cbx"></div>    
+            <div class="dropdown-merge">
+                <div class="absolute-dropdown-plus"  :class="[{ dropup: isOpenDropdown }]">
+                    <div class="btn-plus"></div>    
+                </div>   
+                <div class="absolute-dropdown"  :class="[{ dropup: isOpenDropdown }]" @click="ToggleDropdown">
+                    <div :class="[{ tranform: isOpenDropdown }]"  class="icon-cbx"></div>    
+                </div>
             </div>
            
             <ul class="dropdown-list" v-if="isOpenDropdown">

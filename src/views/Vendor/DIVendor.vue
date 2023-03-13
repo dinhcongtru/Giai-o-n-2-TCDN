@@ -31,10 +31,14 @@
                     <div class="toolBar-left">
                         <div class="mi-arrow-check-all"></div>
                         <div class="delete-all">
-                            <ms-button  class="excuteDeleteBatch" title="Thực hiện xóa hàng loạt" :class="[{ dropup: isDelActive }]" @click="onToggleDelBatch()" />
+                            <ms-button  class="excuteDeleteBatch" title="Thực hiện hàng loạt" :class="[{ dropup: isDelActive }]" @click="onToggleDelBatch()" />
                             <span class="icon-delete"></span>
-                            <ms-button v-if="isDelActive && this.selected.length > 0" id="deleteBatch"  @click="onDeleteBatch()" title="Xóa"/>
-                           
+                            <ms-button v-if="isDelActive" id="deleteBatch"  @click="onDeleteBatch()" title="Xóa"/>
+                            <div
+                                class="overlay-feature"
+                                v-if="isDelActive"
+                                @click="ToggleDropdown"
+                            ></div>
                         </div>
                         <div class="delete-all filter">
                             <ms-button class="excuteDeleteBatch" title="Lọc" />
@@ -43,15 +47,35 @@
                     </div>
                    
                     <div class="row-right">
-                        <ms-input type="text" :autoFocus="true" placeholder="Tìm theo mã, tên nhân viên" id="search-employee"  class="input-search" v-model="filter" autocomplete="off"/>
+                        <ms-input type="text" :autoFocus="true" :isHasLabel="false" placeholder="Tìm theo mã, tên nhân viên" id="search-employee"  styleClass="input-search" ref="search" v-model="filter" autocomplete="off"/>
                         <span class="icon-search"></span>
                         <span class="icon-reload" title="Làm mới" @click="onRefresh"></span>
                         <span class="icon-xuatkhau" title="Xuất ra Excel" @click="exportExcel()"></span>
-                        <span class="mi-setting__list" title="Tùy chỉnh giao diện"></span>
+                        <span class="mi-setting__list" title="Tùy chỉnh giao diện" @click="openSettingDialog"></span>
                     </div>
                 </div>
                     <div class="main-table">
-                        <the-table ref="tableVendor" :pageSize="pageSize" :pageNumber="pageNumber"  :employees="employees" :idForm="isShowModal && idForm" @checkAll="toggleCheckAll($event)" @addForm="onToggleModal" @pageFilter="changePageNumber($event)" @refreshData="onRefresh"  />
+                        <!-- <ms-gird
+                        ref="tableVendor"
+                        :listHeader="listHeader"
+                        :listData="vendors"
+                        :pageSize="pageSize"
+                        :pageNumber="pageNumber"
+                        :vendors="vendors"
+                        :idForm="isShowModal && idForm" 
+                        @checkAll="toggleCheckAll($event)" 
+                        @addForm="onToggleModal" 
+                        @pageFilter="changePageNumber($event)" 
+                        @refreshData="onRefresh"
+                        :isShowSkeleton="isShowSkeleton"
+                        functionText="Sửa"
+                        @onUpdate="updateObject"
+                        @onDelete="handleDelete"
+                        @eShowFunc="showFunction"
+                        @handleHideFunc="hideFunction"
+                        @eMultiSelect="getVendorSelected"
+                        /> -->
+                        <the-table ref="tableVendor" :pageSize="pageSize" :pageNumber="pageNumber"  :vendors="vendors" :idForm="isShowModal && idForm" @checkAll="toggleCheckAll($event)" @addForm="onToggleModal" @pageFilter="changePageNumber($event)" @refreshData="onRefresh" @focusInput="focusInput" />
                     </div>
                 </div>
                 <div class="pagination">
@@ -86,41 +110,53 @@
                 </div>
             </div>
         </div>
-       
-        <ms-dialog
-            v-show="isDialog"
-            dialogName="deleteBatch"            
-            @closeDialog="onDeleteEmployee"
-            @deleteSuccess="onRefresh"
-            :selected="selected"
-            @closeSelect="toggleCheckAll($event)"
-        />
-<ms-loading v-if="isLoading" />
+       <!--
+      Truyền list header(cột của bảng tùy chỉnh giao diện) và list các cột(=>hàng của bảng tùy chỉnh giao diện)
+    -->
+    <ms-dialog-setting
+      ref="settingDialog"
+      :isRight="true"
+      @eUpdateColumn="updateColumn"
+      :listData="listColumnConfig"
+    />
+    <ms-dialog
+    v-show="isDialog"
+    dialogName="deleteBatch"            
+    @closeDialog="onDeleteEmployee"
+    @deleteSuccess="onRefresh"
+    :selected="selected"
+    @closeSelect="toggleCheckAll($event)"
+    />
+<ms-loading  v-if="isLoading"/>
 
 
 </div> 
 </template>
 <script>
 // import VendorDetailsVue from './VendorDetails.vue';
-import msButton from '../../components/base/ms-button.vue';
-import msInput from '../../components/base/ms-input.vue';
+import msDialogSetting from "@/components/base/dialog/ms-dialogSetting.vue"
+import msButton from '../../components/base/button/ms-button.vue';
+import msInput from '../../components/base/input/ms-input.vue';
 import TheTable from '../../components/TheTable.vue';
-import msDialog from '../../components/base/ms-dialog.vue';
-import msLoading from '../../components/base/ms-loading.vue';
+import msDialog from '../../components/base/dialog/ms-dialog.vue';
+import msLoading from '../../components/base/loading/ms-loading.vue';
 import Resource  from '@/Resource/Resource';
 import keyCode from '@/enum/keyCode';
 import axios from 'axios';
-
+// import msGird from '@/components/base/grid/ms-grid.vue'
+//import my js
+import Enum from "@/js/enum";
 import {RepositoryFactory} from '@/Repository/RepositoryFactory';
-const EmployeeRepository = RepositoryFactory.get('Employees');
+const VendorRepository = RepositoryFactory.get('Vendors');
 
 // import TheModal from './TheModal.vue';
 import msDropdownPage from '../../components/base/ms-dropdownPage.vue';
 export default {
 name:"TheVendor",
-components:{msButton,TheTable, msInput ,msDropdownPage ,msDialog,msLoading},
+components:{msButton, msInput ,msDropdownPage ,msDialog,msLoading,TheTable,msDialogSetting},
 mounted(){
-// this.focusInput();
+this.focusInput();
+
     /**
      * Thực hiện render dữ liệu nhân viên
      **  Author: Đinh Công Trứ(26/10/2022)
@@ -195,8 +231,14 @@ return{
     closeSelect: false,
     isDropdown: false,
     pageFilter: this.pageNumber,
-    employees:{}
-    
+    // danh sách nhà cung cấp
+    vendors:{},
+     //danh sách các tiêu đề và fieldName của bảng
+     listHeader: [
+
+     ],
+     isShowSkeleton: false, //có đang hiện skeleton ko?
+     formMode: 0, //trạng thái form đang là gì?
 };
 },
 methods: {
@@ -204,14 +246,20 @@ methods: {
         this.isDialog = false;
         this.selected=[];
     },
-// focusInput(){
-//     // this.$refs.search.$refs.ref.focus();
-// },
+focusInput(){
+    this.$refs.search.$refs.input.focus();
+},
 handleshortcuts(e){
     if(e.keyCode == keyCode.keyCode.insert){
         this.onToggleModal();
     }
 },
+  /**Thực hiện ẩn TheDropdown
+     * Author: Đinh Công Trứ(30/10/2022)
+     */
+     ToggleDropdown() {
+        this.isDelActive = !this.isDelActive;
+    },
  /**
          * Thực hiện xử lý tìm kiếm dữ liệu hiển thị vào trong bảng
          **  Author: Đinh Công Trứ(26/10/2022)
@@ -224,9 +272,9 @@ handleshortcuts(e){
                 this.pageFilter = 1;
             }
             try {
-                EmployeeRepository.getEmployeeByFilterAndPagding(this.pageSize,this.pageNumber,filter)
+                VendorRepository.getVendorByFilterAndPagding(this.pageSize,this.pageNumber,filter)
                 .then((response) => {
-                    this.employees = response.data.data;
+                    this.vendors = response.data.data;
                     this.totalPage = response.data.totalCount;
                     this.$emit("pageFilter", this.pageFilter);
                     this.isLoading = false;
@@ -254,12 +302,13 @@ handleshortcuts(e){
             this.isLoading = true;
             try {
                 
-                EmployeeRepository.getEmployeeByPagding(this.pageSize,this.pageNumber)
+                VendorRepository.getVendorByPagding(this.pageSize,this.pageNumber)
                 .then((response) => {
-                    this.employees = response.data.data;
-                    this.employees.forEach((element) => {
+                    this.vendors = response.data.data;
+                    this.vendors.forEach((element) => {
                         element.IsChecked = false;
                     });
+                 
                     this.totalPage = response.data.totalCount;
 
                     this.isLoading = false;
@@ -305,8 +354,13 @@ handleshortcuts(e){
  **  Author: Đinh Công Trứ(26/10/2022)
  */
  onToggleDelBatch() {
-    this.isDelActive = !this.isDelActive;
-    
+   
+    if(this.selected.length > 0){
+        this.isDelActive = true;
+    }else{
+        this.isDelActive = false;
+
+    }
 },
 /**
  * Thực hiện xử lý UI khi click feature Xóa hiện thị Dialog Xóa nhân viên
@@ -318,6 +372,7 @@ handleshortcuts(e){
     this.isDropdown = false;
     this.featureDropdown = null;
     this.showDelete = null;
+    this.selected = [];
     this.$refs.tableVendor.unCheckAll();
     this.onRefresh();
     // reload lại data
@@ -424,6 +479,8 @@ toggleCheckAll(e) {
     this.selected = e;
     this.isChecked = false;
     this.isDialog = false;
+    this.isDelActive = false;
+
    
    
 },
@@ -447,14 +504,80 @@ onDeleteBatch(){
     }
    
 },
-
+ /**------------------------------------------
+     * Hàm xử lý nhận sự kiện sửa từ table.
+     * @param {Object} object - 1 đối tượng cần sửa.
+     * Author: quyetkaito (23/02/2022)
+     --------------------------------------------*/
+    async updateObject({ data }) {
+      //lưu lại đối tượng đang thao tác
+      this.objectTemp = data;
+      //mở dialog và formMode là sửa.
+      this.openDialog({
+        data: await this.getObject(),
+        formMode: Enum.FormMode.Put,
+      });
+    },
+    /**-----------------------------------------------
+     * Hàm xử lý khi nút [Xóa] được click.
+     * @param {Object} vendor - 1 đối tượng cần xóa (nhận được từ grid)
+     * Author: quyetkaito (25/02/2022)
+     ------------------------------------------------*/
+     handleDelete(vendor) {
+      if (vendor) {
+        this.objectTemp = vendor;
+        //hiện dialog cảnh báo
+        this.showPopup(
+          2,
+          `Bạn có thực sự muốn xóa nhà cung cấp <${this.objectTemp.account_object_code}> không?`
+        );
+      }
+    },
+     /**---------------------------------------------------------------
+     * Hàm thực hiện show table function Xóa/Nhân bản/ Ngừng sử dụng.
+     * @param {Object} object - đối tượng nhà cung cấp.
+     * Author: quyetkaito (08/03/2022)
+     ----------------------------------------------------------------*/
+     showFunction(object) {
+      if (this.isShowFunc) {
+        this.isShowFunc = false;
+      } else {
+        this.isShowFunc = true;
+        //lưu lại đối tượng
+        this.objectTemp = object;
+      }
+    },
+      /**------------------------------------
+     * Hàm thực hiện hide table function.
+     * Author: quyetkaito (08/03/2022)
+     -------------------------------*/
+     hideFunction() {
+      this.isShowFunc = false;
+    },
+ /**-----------------------------------------------------
+     * Lấy danh sách id của các vendor được chọn từ bảng.
+     * @param {Array} value - mảng các id nhà cung cấp.
+     * Author: quyetkaito (14/03/2022)
+     -------------------------------------------------------*/
+     getVendorSelected(value) {
+      //lưu danh sách các vendor được chọn
+      this.listVendorChecked = Object.values(value);
+    },
+    /**
+     * Thực hiện xử lý sự kiện mở tùy chỉnh giao diện
+     * Author: Đinh Công Trứ(25/11/2022)  
+     */
+    openSettingDialog(){
+          //show setting dialog
+      this.$refs.settingDialog.show();
+    },
 /**
  * Thực hiện xử lý xuất Excel
  **  Author: Đinh Công Trứ(25/11/2022)
  */
 exportExcel(){
     try {
-        EmployeeRepository.exportExcel()
+        VendorRepository.exportExcel()
         .then((res) => {
                 res.config.responseType = "blob";
                 axios(res.config).then((res) => {
@@ -463,7 +586,7 @@ exportExcel(){
                     );
                     const link = document.createElement("a");
                     link.href = url;
-                    link.setAttribute("download", "nhanvien.xlsx");
+                    link.setAttribute("download", "nhacungcap.xlsx");
                     document.body.appendChild(link);
                     link.click();
                 });

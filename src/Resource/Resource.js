@@ -96,8 +96,9 @@ export default{
     
     },
     TEXTDIALOG : {
-        deleteBatch : "Bạn có thực sự muốn xóa những nhân viên đã chọn không?",
+        deleteBatch : "Bạn có thực sự muốn xóa những bản ghi đã chọn không?",
         delete : "Bạn có thực sự muốn xóa nhân viên",
+        deleteVendor: "Bạn có thực sự muốn xóa nhà cung cấp",
         textno : "không?",
         warring : "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?"
     },
@@ -111,6 +112,10 @@ export default{
         vendorNameError: "Tên nhà cung cấp không được để trống!",
         vendorCodeError: "Mã nhà cung cấp không được để trống!",
         toolDevelop: "Tính năng đang phát triển, vui lòng thử lại!",
+        deleteAllRows: "Bạn có thực sự muốn xóa tất cả các dòng đã nhập không?",
+        errorChi :"Số phiếu chi không được để trống.",
+        post_date:"Ngày hạch toán phải lớn hơn hoặc bằng ngày chứng từ.",
+        debit_account:"Tài khoản nợ không được để trống."
     },
     MODAL :{
         isCustom : "Là khách hàng",

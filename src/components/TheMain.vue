@@ -80,10 +80,10 @@
         </div> 
 </template>
 <script>
-import msButton from './base/ms-button.vue';
+import msButton from './base/button/ms-button.vue';
 import msInput from './base/ms-input.vue';
 import TheTable from './TheTable.vue';
-import msDialog from './base/ms-dialog.vue';
+import msDialog from './base/dialog/ms-dialog.vue';
 import msLoading from './base/ms-loading.vue';
 import Resource  from '@/Resource/Resource';
 import keyCode from '@/enum/keyCode';

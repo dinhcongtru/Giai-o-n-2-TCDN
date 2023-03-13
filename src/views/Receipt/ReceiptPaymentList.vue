@@ -48,11 +48,11 @@
                                 <span class="icon-search"></span>
                                 <span class="icon-reload" title="Làm mới" @click="onRefresh"></span>
                                 <span class="icon-xuatkhau" title="Xuất ra Excel" @click="exportExcel()"></span>
-                                <span class="mi-setting__list" title="Tùy chỉnh giao diện"></span>
+                                <span class="mi-setting__list" @click="openSettingDialog"></span>
                             </div>
                              </div>
                         <div class="main-table">
-                            <table-receipt pageSize="pageSize" :pageNumber="pageNumber"   :employees="employees" :idForm="isShowModal && idForm" @checkAll="toggleCheckAll($event)" @addForm="onToggleModal" @pageFilter="changePageNumber($event)" @refreshData="onRefresh"  />
+                            <table-receipt ref="tablePayment" pageSize="pageSize" :pageNumber="pageNumber"   :employees="employees" :idForm="isShowModal && idForm" @checkAll="toggleCheckAll($event)" @addForm="onToggleModal" @pageFilter="changePageNumber($event)" @refreshData="onRefresh" @setting="openSettingDialog" />
                         </div>
                     </div>
                         <div class="pagination">
@@ -95,6 +95,12 @@
             :selected="selected"
             @closeSelect="toggleCheckAll($event)"
         />
+        <ms-dialog-setting
+        ref="settingDialog"
+        :isRight="true"
+        @eUpdateColumn="updateColumn"
+        :listData="listColumnConfig"
+        />
         <ms-loading v-if="isLoading" />
         <!-- <receipt-detalis v-if="isShowModal == true" @closeModalRece="isShowModal = false" :employeeCode="employees.employeeCode" :employeeID="employees.employeeID" :id="id"/> -->
 
@@ -102,13 +108,14 @@
 </template>
 <script>
 
-import msButton from '../../components/base/ms-button.vue';
+import msButton from '../../components/base/button/ms-button.vue';
 import msInput from '../../components/base/ms-input.vue';
 import TableReceipt from '../../components/TablePecet.vue';
-import msDialog from '../../components/base/ms-dialog.vue';
+import msDialog from '../../components/base/dialog/ms-dialog.vue';
 import msLoading from '../../components/base/ms-loading.vue';
 import Resource  from '@/Resource/Resource';
 import keyCode from '@/enum/keyCode';
+import msDialogSetting from '@/components/base/dialog/ms-dialogSetting.vue'
 import axios from 'axios';
 import {RepositoryFactory} from '../../Repository/RepositoryFactory';
  const EmployeeRepository = RepositoryFactory.get('Employees');
@@ -118,7 +125,7 @@ import msDropdownPage from '../../components/base/ms-dropdownPage.vue';
 // import ReceiptDetalis from './ReceiptDetalis.vue';
 export default {
     name:"ReceiptPaymentList",
-    components:{msButton,TableReceipt, msInput ,msDropdownPage ,msDialog,msLoading },
+    components:{msButton,TableReceipt, msInput ,msDropdownPage ,msDialog,msLoading,msDialogSetting },
     mounted(){
         /**
          * Thực hiện render dữ liệu nhân viên
@@ -285,7 +292,8 @@ export default {
             this.isDropdown = false;
             this.featureDropdown = null;
             this.showDelete = null;
-            this.selected= [];
+            this.selected = [];
+            this.$refs.tablePayment.unCheckAll();
             this.onRefresh();
             // reload lại data
         },
@@ -410,7 +418,14 @@ export default {
             }
            
         },
-       
+       /**
+         * Thực hiện xử lý sự kiện mở tùy chỉnh giao diện
+         * Author: Đinh Công Trứ(25/11/2022)  
+         */
+        openSettingDialog(){
+            //show setting dialog
+        this.$refs.settingDialog.show();
+        },
         /**
          * Thực hiện xử lý xuất Excel
          **  Author: Đinh Công Trứ(25/11/2022)
@@ -426,7 +441,7 @@ export default {
                             );
                             const link = document.createElement("a");
                             link.href = url;
-                            link.setAttribute("download", "nhanvien.xlsx");
+                            link.setAttribute("download", "thuchitien.xlsx");
                             document.body.appendChild(link);
                             link.click();
                         });
@@ -441,3 +456,12 @@ export default {
     },
 }
 </script>
+<style scoped>
+
+.main-table {
+    overflow: auto;
+    height: calc(100vh - 400px) !important;
+    background-color: white;
+    margin-right: 20px;
+}
+</style>
