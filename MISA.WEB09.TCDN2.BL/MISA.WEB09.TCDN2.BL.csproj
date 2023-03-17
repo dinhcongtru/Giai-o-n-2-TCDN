@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MISA.WEB09.TCDN2.Common\MISA.WEB09.TCDN2.Common.csproj" />
+    <ProjectReference Include="..\MISA.WEB09.TCDN2.DL\MISA.WEB09.TCDN2.DL.csproj" />
+  </ItemGroup>
+
+</Project>
